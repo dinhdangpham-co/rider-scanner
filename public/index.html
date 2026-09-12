@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FC6B03">
+<title>SPX Scanner</title>
+<link rel="manifest" href="/manifest.json">
+<style>
+  :root {
+    --spx: #FC6B03;
+    --spx-dark: #E05E00;
+    --spx-light: #FFF3E8;
+    --green: #10B981;
+    --green-bg: #D1FAE5;
+    --red: #EF4444;
+    --red-bg: #FEE2E2;
+    --purple: #8B5CF6;
+    --blue: #3B82F6;
+    --bg: #F8FAFC;
+    --white: #FFFFFF;
+    --card: #FFFFFF;
+    --text: #1E293B;
+    --text2: #64748B;
+    --border: #E2E8F0;
+    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,.1);
+    --radius: 16px;
+    --radius-sm: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0F172A;
+      --card: #1E293B;
+      --text: #F1F5F9;
+      --text2: #94A3B8;
+      --border: #334155;
+      --spx-light: #3D2200;
+      --green-bg: #064E3B;
+      --red-bg: #7F1D1D;
+    }
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, var(--spx) 0%, var(--spx-dark) 100%);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(252,107,3,.3);
+  }
+  .header h1 { font-size: 17px; font-weight: 800; color: #fff; display:flex; align-items:center; gap:8px; }
+  .header h1 img { height:22px; }
+  .header .badge-online {
+    font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    background: var(--green); color: #fff; font-weight: 600;
+  }
+  .header .badge-offline {
+    font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    background: rgba(255,255,255,.25); color: #fff; font-weight: 600;
+  }
+
+  /* ===== SCREENS ===== */
+  .screen { display:none; padding:16px 16px 100px; max-width:480px; margin:0 auto; }
+  .screen.active { display:block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: 12px; font-weight: 700; color: var(--text2);
+    text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card-title .icon { font-size: 14px; }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: flex; align-items: center; justify-content: center;
+    padding: 14px 20px; border: none; border-radius: var(--radius-sm);
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: all .15s; width: 100%; gap: 8px;
+    text-decoration: none;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn-spx { background: var(--spx); color: #fff; }
+  .btn-spx:hover { background: var(--spx-dark); }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-outline {
+    background: var(--spx-light); color: var(--spx);
+    border: 2px solid var(--spx);
+  }
+  .btn-ghost {
+    background: transparent; color: var(--text2);
+    border: 1px solid var(--border);
+  }
+  .btn:disabled { opacity:.4; cursor:not-allowed; }
+  .btn-sm { padding:10px 14px; font-size:13px; border-radius:10px; }
+
+  /* ===== SELECT ===== */
+  .select-wrap { position: relative; }
+  .select-wrap select {
+    width: 100%; padding: 14px 40px 14px 16px; font-size: 15px;
+    background: var(--bg); color: var(--text);
+    border: 2px solid var(--border); border-radius: var(--radius-sm);
+    appearance: none; cursor: pointer; font-weight: 500;
+  }
+  .select-wrap select:focus { outline: none; border-color: var(--spx); }
+  .select-wrap::after {
+    content:'▼'; position:absolute; right:14px; top:50%;
+    transform:translateY(-50%); color:var(--text2); font-size:12px; pointer-events:none;
+  }
+
+  /* ===== INPUT ===== */
+  .input-row { display:flex; gap:8px; }
+  .input-row input {
+    flex:1; padding:12px 14px; background:var(--bg); border:2px solid var(--border);
+    border-radius: var(--radius-sm); color:var(--text); font-size:15px;
+    font-family: 'SF Mono','Fira Code','Consolas', monospace;
+  }
+  .input-row input:focus { outline:none; border-color:var(--spx); }
+  .input-row input::placeholder { color:var(--text2); font-family:inherit; }
+
+  /* ===== SCANNER ===== */
+  #scanner-container {
+    width:100%; border-radius:var(--radius); overflow:hidden;
+    position:relative; background:#000;
+  }
+  #scanner-container video { width:100%!important; border-radius:var(--radius); }
+  .scan-overlay {
+    position:absolute; top:0;left:0;right:0;bottom:0;
+    display:flex; align-items:center; justify-content:center;
+    pointer-events:none; z-index:10;
+  }
+  .scan-frame {
+    width:85%; height:40%; border:3px solid var(--spx); border-radius:14px;
+    position:relative; box-shadow: 0 0 0 9999px rgba(0,0,0,.45);
+  }
+  .scan-frame::before,.scan-frame::after {
+    content:''; position:absolute; width:28px; height:28px;
+    border-color:var(--green); border-style:solid;
+  }
+  .scan-frame::before { top:-2px;left:-2px; border-width:4px 0 0 4px; border-radius:8px 0 0 0; }
+  .scan-frame::after { bottom:-2px;right:-2px; border-width:0 4px 4px 0; border-radius:0 0 8px 0; }
+
+  /* ===== SCAN MODE BAR ===== */
+  .mode-bar {
+    text-align:center; padding:12px; border-radius:var(--radius-sm);
+    font-weight:800; font-size:15px; margin-bottom:12px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .mode-to { background:linear-gradient(135deg,#7C3AED,#6D28D9); color:#fff; }
+  .mode-parcel { background:linear-gradient(135deg,var(--green),#059669); color:#fff; }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position:fixed; top:64px; left:12px; right:12px;
+    padding:14px 16px; border-radius:var(--radius-sm);
+    font-weight:700; font-size:14px; z-index:200;
+    text-align:center; box-shadow:var(--shadow-lg);
+    animation: slideIn .25s ease-out;
+  }
+  .toast-ok { background:var(--green); color:#fff; }
+  .toast-err { background:var(--red); color:#fff; }
+  .toast-warn { background:#F59E0B; color:#000; }
+  .toast-info { background:var(--blue); color:#fff; }
+  @keyframes slideIn { from{transform:translateY(-16px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+  /* ===== STATS GRID ===== */
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px; }
+  .stat {
+    text-align:center; padding:12px 6px;
+    background:var(--spx-light); border-radius:var(--radius-sm);
+  }
+  .stat .n { font-size:30px; font-weight:900; color:var(--spx); line-height:1; }
+  .stat .l { font-size:10px; color:var(--text2); margin-top:4px; text-transform:uppercase; font-weight:600; }
+
+  /* ===== SCAN LOG ===== */
+  .log-list { max-height:280px; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  .log-item {
+    display:flex; align-items:center; padding:8px 0;
+    border-bottom:1px solid var(--border); gap:10px;
+  }
+  .log-item:last-child { border-bottom:none; }
+  .log-item .idx {
+    width:28px; height:28px; background:var(--spx); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:800; color:#fff; flex-shrink:0;
+  }
+  .log-item .code {
+    font-family:'SF Mono','Fira Code',monospace; font-size:13px;
+    word-break:break-all; flex:1; font-weight:500;
+  }
+  .log-item .zone-tag {
+    padding:3px 8px; border-radius:8px; font-size:10px;
+    font-weight:700; background:var(--purple); color:#fff; flex-shrink:0;
+  }
+  .log-item .time { font-size:11px; color:var(--text2); flex-shrink:0; }
+
+  /* ===== MASTER INFO ===== */
+  .master-info {
+    background:var(--spx-light); border-radius:10px; padding:10px 12px;
+    margin-top:8px; font-size:12px; display:none;
+  }
+  .master-info.show { display:block; }
+  .master-info .row { display:flex; justify-content:space-between; padding:2px 0; }
+  .master-info .lbl { color:var(--text2); }
+  .master-info .val { font-weight:600; font-family:monospace; }
+
+  /* ===== BOTTOM NAV ===== */
+  .bnav {
+    position:fixed; bottom:0; left:0; right:0; background:var(--card);
+    border-top:1px solid var(--border); display:flex;
+    padding:6px 0 max(6px, env(safe-area-inset-bottom)); z-index:100;
+    box-shadow: 0 -2px 8px rgba(0,0,0,.06);
+  }
+  .bnav-item {
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
+    padding:6px 4px; cursor:pointer; color:var(--text2); font-size:10px;
+    font-weight:600; border:none; background:none; transition:color .2s;
+  }
+  .bnav-item.on { color:var(--spx); }
+  .bnav-item svg { width:22px; height:22px; }
+
+  /* ===== FLASH ===== */
+  .flash {
+    position:fixed; top:0;left:0;right:0;bottom:0;
+    background:rgba(16,185,129,.12); pointer-events:none; z-index:300;
+    animation: flashAnim .2s ease-out forwards;
+  }
+  @keyframes flashAnim { from{opacity:1} to{opacity:0} }
+
+  /* ===== SESSION BANNER ===== */
+  .session-banner {
+    background: linear-gradient(135deg, var(--spx-light), var(--card));
+    border: 2px solid var(--spx);
+    border-radius: var(--radius);
+    padding: 14px 16px; margin-bottom: 12px;
+    display: none;
+  }
+  .session-banner.show { display: block; }
+  .session-banner .row { display:flex; justify-content:space-between; margin-bottom:10px; }
+  .session-banner .label { font-size:12px; color:var(--text2); font-weight:600; }
+  .session-banner .value { font-size:16px; font-weight:800; }
+
+  /* ===== UTILITY ===== */
+  .mt-8 { margin-top:8px; }
+  .mt-12 { margin-top:12px; }
+  .mb-12 { margin-bottom:12px; }
+  .text-center { text-align:center; }
+  .text-sm { font-size:13px; }
+  .text-muted { color:var(--text2); }
+  .divider { text-align:center; color:var(--text2); font-size:12px; padding:8px 0; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📦 SPX Scanner</h1>
+  <span id="connBadge" class="badge-offline">Đang kết nối...</span>
+</div>
+
+<!-- ============ TRANG CHỦ ============ -->
+<div class="screen active" id="s-home">
+
+  <div class="card">
+    <div class="card-title"><span class="icon">👤</span> Bước 1 — Chọn tài xế</div>
+    <div class="select-wrap">
+      <select id="selRider"><option value="">-- Chọn tài xế --</option></select>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">📋</span> Bước 2 — Mã TO (chuyến)</div>
+    <div class="input-row">
+      <input type="text" id="inpTO" placeholder="VD: TO20260912BQMYU" autocomplete="off" autocapitalize="characters">
+      <button class="btn btn-spx btn-sm" onclick="setTO()" style="width:auto;min-width:56px">OK</button>
+    </div>
+    <div class="divider">hoặc</div>
+    <button class="btn btn-outline" onclick="scanTO()">📷 Quét mã TO bằng camera</button>
+  </div>
+
+  <div class="session-banner" id="sessionCard">
+    <div class="row">
+      <div><div class="label">Tài xế</div><div class="value" id="sesRider">-</div></div>
+      <div style="text-align:right"><div class="label">Mã TO</div><div class="value" id="sesTO" style="font-family:monospace">-</div></div>
+    </div>
+    <button class="btn btn-green" onclick="startScan()">🚀 BẮT ĐẦU QUÉT ĐƠN</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">📊</span> Thống kê hôm nay</div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="stTotal">0</div><div class="l">Tổng đơn</div></div>
+      <div class="stat"><div class="n" id="stSession">0</div><div class="l">Phiên này</div></div>
+      <div class="stat"><div class="n" id="stDup">0</div><div class="l">Trùng</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ MÀN HÌNH QUÉT ============ -->
+<div class="screen" id="s-scan">
+
+  <div class="mode-bar" id="modeBar">ĐANG QUÉT</div>
+
+  <div id="scanner-container">
+    <div id="reader"></div>
+    <div class="scan-overlay"><div class="scan-frame"></div></div>
+  </div>
+
+  <div class="stats mt-12">
+    <div class="stat"><div class="n" id="scCount">0</div><div class="l">Đã quét</div></div>
+    <div class="stat"><div class="n" id="scDup">0</div><div class="l">Trùng</div></div>
+    <div class="stat"><div class="n" id="scRate">0</div><div class="l">Đơn/phút</div></div>
+  </div>
+
+  <!-- Master data result -->
+  <div class="master-info" id="masterResult">
+    <div class="row"><span class="lbl">Zone:</span><span class="val" id="mrZone">-</span></div>
+    <div class="row"><span class="lbl">Sort Code:</span><span class="val" id="mrSort">-</span></div>
+    <div class="row"><span class="lbl">Phường:</span><span class="val" id="mrWard">-</span></div>
+    <div class="row"><span class="lbl">Trạng thái:</span><span class="val" id="mrStatus">-</span></div>
+  </div>
+
+  <div class="card mt-12">
+    <div class="card-title"><span class="icon">⌨️</span> Nhập thủ công</div>
+    <div class="input-row">
+      <input type="text" id="inpManual" placeholder="Nhập mã đơn..." autocomplete="off" autocapitalize="characters">
+      <button class="btn btn-spx btn-sm" onclick="submitManual()" style="width:auto;min-width:56px">OK</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="card-title" style="margin:0"><span class="icon">📝</span> Danh sách đã quét</div>
+      <span class="text-sm text-muted" id="lastTime">--</span>
+    </div>
+    <div class="log-list" id="scanLog"></div>
+  </div>
+
+  <button class="btn btn-red mt-12" onclick="stopAll()">⏹ DỪNG QUÉT</button>
+
+</div>
+
+<!-- ============ LỊCH SỬ ============ -->
+<div class="screen" id="s-history">
+  <div class="card">
+    <div class="card-title"><span class="icon">📜</span> Lịch sử quét</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button class="btn btn-ghost btn-sm" onclick="loadHistory()">🔄 Tải lại</button>
+      <button class="btn btn-spx btn-sm" onclick="exportCSV()">📥 Xuất CSV</button>
+    </div>
+    <div id="histList" class="log-list" style="max-height:500px"></div>
+  </div>
+</div>
+
+<!-- ============ CÀI ĐẶT ============ -->
+<div class="screen" id="s-settings">
+
+  <div class="card">
+    <div class="card-title"><span class="icon">👥</span> Quản lý tài xế</div>
+    <div class="input-row mb-12">
+      <input type="text" id="inpNewRider" placeholder="Tên tài xế mới...">
+      <button class="btn btn-spx btn-sm" onclick="addRider()" style="width:auto;min-width:72px">Thêm</button>
+    </div>
+    <div id="riderList" class="log-list" style="max-height:300px"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">🔗</span> Nạp dữ liệu từ Google Sheets</div>
+    <p class="text-sm text-muted mb-12">
+      Dán link <strong>Published TSV/CSV</strong> từ Google Sheets.<br>
+      File → Share → Publish to web → chọn Tab → TSV → Publish → copy link.
+    </p>
+    <div class="input-row mb-12">
+      <input type="text" id="inpSheetURL" placeholder="https://docs.google.com/spreadsheets/d/.../pub?output=tsv" style="font-size:12px;font-family:inherit">
+      <button class="btn btn-spx btn-sm" onclick="loadSheetURL()" style="width:auto;min-width:56px">Nạp</button>
+    </div>
+    <div id="masterStatus" class="text-sm"></div>
+    <button class="btn btn-ghost btn-sm mt-8" onclick="refreshMaster()">🔄 Refresh dữ liệu</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">📄</span> Upload file CSV/TSV</div>
+    <input type="file" id="masterFile" accept=".csv,.tsv,.txt" style="color:var(--text);font-size:13px" onchange="uploadFile()">
+    <div id="fileStatus" class="text-sm mt-8"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="icon">ℹ️</span> Thông tin</div>
+    <div class="text-sm text-muted">
+      <p>Server: <span id="infoAPI">-</span></p>
+      <p>Giờ VN: <span id="infoTime">-</span></p>
+      <p>Master data: <span id="infoMaster">0 dòng</span></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <button class="bnav-item on" onclick="go('home')" data-s="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+    Trang chủ
+  </button>
+  <button class="bnav-item" onclick="go('scan')" data-s="scan">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Quét
+  </button>
+  <button class="bnav-item" onclick="go('history')" data-s="history">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+    Lịch sử
+  </button>
+  <button class="bnav-item" onclick="go('settings')" data-s="settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    Cài đặt
+  </button>
+</div>
+
+<!-- html5-qrcode with BARCODE support -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+<script>
+const API = location.origin;
+let USE_SERVER = true;
+
+// State
+let rider = null, toCode = '', scanMode = '';
+let qrScanner = null, scanning = false;
+let sessionScans = [], dupCount = 0, scanStart = null;
+let lastCode = '', lastCodeTime = 0;
+const COOLDOWN = 1000;
+
+// ===== AUDIO =====
+let audioCtx = null;
+function beep(f=1200,d=80){
+  try{
+    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);
+    o.frequency.value=f;g.gain.value=0.25;o.start();o.stop(audioCtx.currentTime+d/1000);
+  }catch(e){}
+}
+function beepOK(){beep(1200,60);setTimeout(()=>beep(1600,60),80);}
+function beepDup(){beep(400,200);}
+function flash(){
+  const d=document.createElement('div');d.className='flash';
+  document.body.appendChild(d);setTimeout(()=>d.remove(),250);
+}
+
+// ===== NAV =====
+function go(s){
+  document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
+  document.getElementById('s-'+s).classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+  if(s==='history') loadHistory();
+  if(s==='settings') loadSettings();
+}
+
+// ===== API =====
+async function api(ep,method='GET',body=null){
+  try{
+    const opts={method,headers:{'Content-Type':'application/json'}};
+    if(body) opts.body=JSON.stringify(body);
+    const r=await fetch(API+ep,opts);
+    const d=await r.json();
+    setOnline(true);
+    return d;
+  }catch(e){
+    console.warn('API err:',e);
+    setOnline(false);
+    return null;
+  }
+}
+function setOnline(on){
+  const b=document.getElementById('connBadge');
+  b.textContent=on?'Đã kết nối':'Mất kết nối';
+  b.className=on?'badge-online':'badge-offline';
+  USE_SERVER=on;
+}
+
+// ===== RIDERS =====
+async function loadRiders(){
+  const sel=document.getElementById('selRider');
+  if(USE_SERVER){
+    const r=await api('/api/riders');
+    if(r&&r.success){
+      sel.innerHTML='<option value="">-- Chọn tài xế --</option>';
+      r.data.forEach(d=>{
+        sel.innerHTML+=`<option value="${d.id}" data-name="${d.name}" data-zone="${d.zone||''}">${d.name}${d.zone?' ('+d.zone+')':''}</option>`;
+      });
+      localStorage.setItem('riders',JSON.stringify(r.data));
+      return;
+    }
+  }
+  const local=JSON.parse(localStorage.getItem('riders')||'[]');
+  sel.innerHTML='<option value="">-- Chọn tài xế --</option>';
+  local.forEach(d=>{
+    sel.innerHTML+=`<option value="${d.id}" data-name="${d.name}">${d.name}</option>`;
+  });
+}
+
+document.getElementById('selRider').addEventListener('change',function(){
+  const o=this.options[this.selectedIndex];
+  if(this.value){
+    rider={id:parseInt(this.value),name:o.dataset.name,zone:o.dataset.zone||''};
+    localStorage.setItem('lastRider',JSON.stringify(rider));
+    checkReady();
+  }else rider=null;
+});
+
+async function addRider(){
+  const name=document.getElementById('inpNewRider').value.trim();
+  if(!name)return;
+  if(USE_SERVER) await api('/api/riders','POST',{name});
+  document.getElementById('inpNewRider').value='';
+  loadRiders();
+  loadSettings();
+}
+
+// ===== TO =====
+function setTO(){
+  const v=document.getElementById('inpTO').value.trim().toUpperCase();
+  if(!v)return;
+  toCode=v;
+  checkReady();
+  toast('✅ Mã TO: '+v,'ok');
+}
+function scanTO(){
+  scanMode='TO';
+  go('scan');
+  startCamera();
+}
+document.getElementById('inpTO').addEventListener('keydown',e=>{if(e.key==='Enter')setTO();});
+
+function checkReady(){
+  const card=document.getElementById('sessionCard');
+  if(rider&&toCode){
+    card.classList.add('show');
+    document.getElementById('sesRider').textContent=rider.name;
+    document.getElementById('sesTO').textContent=toCode;
+  }else card.classList.remove('show');
+}
+
+// ===== SCANNING =====
+function startScan(){
+  if(!rider||!toCode){toast('⚠️ Chọn tài xế và mã TO trước!','err');return;}
+  scanMode='PARCEL';
+  sessionScans=[];dupCount=0;scanStart=Date.now();
+  go('scan');
+  startCamera();
+  updateStats();
+}
+
+async function startCamera(){
+  const mb=document.getElementById('modeBar');
+  if(scanMode==='TO'){
+    mb.textContent='🟣 QUÉT MÃ TO';mb.className='mode-bar mode-to';
+  }else{
+    mb.textContent='🟢 QUÉT ĐƠN LIÊN TỤC';mb.className='mode-bar mode-parcel';
+  }
+
+  if(qrScanner&&scanning){try{await qrScanner.stop();}catch(e){}}
+
+  qrScanner=new Html5Qrcode("reader");
+  scanning=true;
+
+  const cfg={
+    fps: 15,
+    qrbox: function(vw,vh){
+      const w=Math.floor(vw*0.9), h=Math.floor(vh*0.35);
+      return {width:w, height:Math.max(h,80)};
+    },
+    aspectRatio: 1.0,
+    // ★ BẮT BUỘC: Bật TẤT CẢ format barcode + QR
+    formatsToSupport: [
+      Html5QrcodeSupportedFormats.QR_CODE,
+      Html5QrcodeSupportedFormats.CODE_128,
+      Html5QrcodeSupportedFormats.CODE_39,
+      Html5QrcodeSupportedFormats.CODE_93,
+      Html5QrcodeSupportedFormats.EAN_13,
+      Html5QrcodeSupportedFormats.EAN_8,
+      Html5QrcodeSupportedFormats.UPC_A,
+      Html5QrcodeSupportedFormats.UPC_E,
+      Html5QrcodeSupportedFormats.ITF,
+      Html5QrcodeSupportedFormats.CODABAR,
+      Html5QrcodeSupportedFormats.DATA_MATRIX,
+      Html5QrcodeSupportedFormats.AZTEC,
+      Html5QrcodeSupportedFormats.PDF_417,
+    ],
+    experimentalFeatures: { useBarCodeDetectorIfSupported: true },
+    rememberLastUsedCamera: true,
+    // ★ Không giới hạn disableFlip để đọc barcode từ mọi hướng
+    disableFlip: false,
+  };
+
+  try{
+    await qrScanner.start(
+      {facingMode:"environment"},
+      cfg,
+      onScan,
+      ()=>{}
+    );
+  }catch(err){
+    console.error("Camera err:",err);
+    toast('❌ Không mở được camera! Kiểm tra quyền.','err');
+  }
+}
+
+async function onScan(text){
+  const now=Date.now();
+  const code=text.trim().toUpperCase();
+  if(!code)return;
+
+  // Cooldown: same code within 1s → skip
+  if(code===lastCode && now-lastCodeTime<COOLDOWN) return;
+  lastCode=code;
+  lastCodeTime=now;
+
+  if(scanMode==='TO'){
+    toCode=code;
+    checkReady();
+    toast('✅ Mã TO: '+code,'ok');
+    beepOK(); flash();
+    await stopCamera();
+    go('home');
+    return;
+  }
+
+  await processParcel(code);
+}
+
+async function processParcel(code){
+  const isDup=sessionScans.some(s=>s.code===code);
+
+  if(isDup){
+    dupCount++;beepDup();
+    toast('⚠️ TRÙNG: '+code,'warn');
+    document.getElementById('scDup').textContent=dupCount;
+  }else{
+    beepOK();flash();
+  }
+
+  const scan={code,time:new Date().toISOString(),isDuplicate:isDup,zone:'',info:null};
+
+  if(USE_SERVER){
+    const r=await api('/api/scans','POST',{
+      rider_id:rider.id, rider_name:rider.name,
+      to_code:toCode, parcel_code:code,
+      scan_type:'PARCEL', raw_data:code,
+    });
+    if(r&&r.master_match){
+      scan.zone=r.master_match.zone||r.master_match.sort_code||'';
+      scan.info=r.data.master_info||null;
+      showMasterInfo(scan.info);
+    }else{
+      hideMasterInfo();
+    }
+  }else{
+    const offline=JSON.parse(localStorage.getItem('offlineScans')||'[]');
+    offline.push({rider:rider.name,to:toCode,code,time:scan.time,dup:isDup});
+    localStorage.setItem('offlineScans',JSON.stringify(offline));
+  }
+
+  if(!isDup){
+    sessionScans.push(scan);
+    toast(`✅ #${sessionScans.length} ${code}${scan.zone?' ['+scan.zone+']':''}`,'ok');
+  }
+
+  updateStats();
+  renderLog();
+}
+
+function showMasterInfo(info){
+  if(!info){hideMasterInfo();return;}
+  const el=document.getElementById('masterResult');
+  el.classList.add('show');
+  document.getElementById('mrZone').textContent=info.sort_code||info.zone||'-';
+  document.getElementById('mrSort').textContent=info.sort_code||'-';
+  document.getElementById('mrWard').textContent=info.ward||'-';
+  document.getElementById('mrStatus').textContent=info.status||'-';
+}
+function hideMasterInfo(){document.getElementById('masterResult').classList.remove('show');}
+
+function submitManual(){
+  const inp=document.getElementById('inpManual');
+  const code=inp.value.trim().toUpperCase();
+  if(!code)return;
+  if(scanMode==='TO'){
+    toCode=code;checkReady();toast('✅ Mã TO: '+code,'ok');beepOK();stopCamera();go('home');
+  }else{
+    processParcel(code);
+  }
+  inp.value='';inp.focus();
+}
+document.getElementById('inpManual').addEventListener('keydown',e=>{if(e.key==='Enter')submitManual();});
+
+function updateStats(){
+  document.getElementById('scCount').textContent=sessionScans.length;
+  document.getElementById('scDup').textContent=dupCount;
+  if(scanStart&&sessionScans.length>0){
+    const min=(Date.now()-scanStart)/60000;
+    document.getElementById('scRate').textContent=min>0?Math.round(sessionScans.length/min):0;
+  }
+  document.getElementById('stSession').textContent=sessionScans.length;
+  document.getElementById('stDup').textContent=dupCount;
+}
+
+function renderLog(){
+  const el=document.getElementById('scanLog');
+  const items=[...sessionScans].reverse().slice(0,60);
+  el.innerHTML=items.map((s,i)=>`
+    <div class="log-item" style="${s.isDuplicate?'opacity:.4':''}">
+      <div class="idx">${sessionScans.length-i}</div>
+      <div class="code">${s.code}</div>
+      ${s.zone?`<div class="zone-tag">${s.zone}</div>`:''}
+      <div class="time">${new Date(s.time).toLocaleTimeString('vi-VN')}</div>
+    </div>
+  `).join('');
+  document.getElementById('lastTime').textContent=
+    items.length>0?new Date(items[0].time).toLocaleTimeString('vi-VN'):'--';
+}
+
+async function stopCamera(){
+  if(qrScanner&&scanning){try{await qrScanner.stop();qrScanner.clear();}catch(e){}}
+  scanning=false;
+}
+
+async function stopAll(){
+  await stopCamera();
+  go('home');
+  loadTodayStats();
+}
+
+// ===== HISTORY =====
+async function loadHistory(){
+  const el=document.getElementById('histList');
+  el.innerHTML='<div class="text-center text-muted">Đang tải...</div>';
+  if(USE_SERVER){
+    const r=await api('/api/scans?limit=200');
+    if(r&&r.success){
+      if(!r.data.length){el.innerHTML='<div class="text-center text-muted">Chưa có dữ liệu</div>';return;}
+      el.innerHTML=r.data.map((s,i)=>`
+        <div class="log-item">
+          <div class="idx" style="font-size:9px">${i+1}</div>
+          <div style="flex:1">
+            <div class="code">${s.parcel_code||s.to_code}</div>
+            <div class="text-sm text-muted">${s.rider_name} | ${s.to_code} | ${s.scan_type}</div>
+          </div>
+          <div class="time">${new Date(s.timestamp).toLocaleString('vi-VN')}</div>
+        </div>
+      `).join('');
+      return;
+    }
+  }
+  const offline=JSON.parse(localStorage.getItem('offlineScans')||'[]');
+  if(!offline.length){el.innerHTML='<div class="text-center text-muted">Chưa có dữ liệu</div>';return;}
+  el.innerHTML=[...offline].reverse().slice(0,100).map((s,i)=>`
+    <div class="log-item">
+      <div class="idx" style="font-size:9px">${i+1}</div>
+      <div style="flex:1"><div class="code">${s.code}</div><div class="text-sm text-muted">${s.rider} | ${s.to}</div></div>
+      <div class="time">${new Date(s.time).toLocaleString('vi-VN')}</div>
+    </div>
+  `).join('');
+}
+
+function exportCSV(){
+  if(USE_SERVER){window.open(API+'/api/scans/export','_blank');return;}
+  const scans=JSON.parse(localStorage.getItem('offlineScans')||'[]');
+  let csv='\uFEFF'+'Tài xế,TO,Mã đơn,Thời gian,Trùng\n';
+  scans.forEach(s=>{csv+=`"${s.rider}","${s.to}","${s.code}","${s.time}","${s.dup}"\n`;});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`scans_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+}
+
+// ===== SETTINGS =====
+async function loadSettings(){
+  document.getElementById('infoAPI').textContent=API;
+
+  if(USE_SERVER){
+    const t=await api('/api/time');
+    if(t) document.getElementById('infoTime').textContent=t.vietnam;
+
+    const m=await api('/api/master/info');
+    if(m&&m.success){
+      document.getElementById('infoMaster').textContent=m.count+' dòng';
+      if(m.url) document.getElementById('inpSheetURL').value=m.url;
+    }
+
+    const r=await api('/api/riders');
+    if(r&&r.success){
+      document.getElementById('riderList').innerHTML=r.data.map(d=>
+        `<div class="log-item">
+          <div class="idx" style="font-size:9px">${d.id}</div>
+          <div class="code" style="flex:1">${d.name} ${d.zone?'<span class="zone-tag">'+d.zone+'</span>':''}</div>
+        </div>`
+      ).join('');
+    }
+  }
+}
+
+async function loadSheetURL(){
+  const url=document.getElementById('inpSheetURL').value.trim();
+  if(!url){toast('Dán link Google Sheets vào!','err');return;}
+  const el=document.getElementById('masterStatus');
+  el.innerHTML='⏳ Đang tải dữ liệu...';el.style.color='var(--text)';
+
+  const r=await api('/api/master/url','POST',{url});
+  if(r&&r.success){
+    el.innerHTML=`✅ Nạp thành công: <strong>${r.count}</strong> dòng`;
+    el.style.color='var(--green)';
+    toast('✅ Nạp '+r.count+' dòng dữ liệu!','ok');
+  }else{
+    el.innerHTML='❌ Lỗi: '+(r?r.error:'Không kết nối được');
+    el.style.color='var(--red)';
+  }
+}
+
+async function refreshMaster(){
+  const el=document.getElementById('masterStatus');
+  el.innerHTML='⏳ Đang refresh...';
+  const r=await api('/api/master/refresh','POST');
+  if(r&&r.success){
+    el.innerHTML=`✅ Refresh thành công: <strong>${r.count}</strong> dòng`;
+    el.style.color='var(--green)';
+  }else{
+    el.innerHTML='❌ '+(r?r.error:'Lỗi');
+    el.style.color='var(--red)';
+  }
+}
+
+async function uploadFile(){
+  const file=document.getElementById('masterFile').files[0];
+  if(!file)return;
+  const el=document.getElementById('fileStatus');
+  el.textContent='⏳ Đang xử lý...';
+
+  try{
+    const txt=await file.text();
+    const lines=txt.split('\n').filter(l=>l.trim());
+    if(lines.length<2)throw new Error('File rỗng');
+    const sep=lines[0].includes('\t')?'\t':',';
+    const headers=lines[0].split(sep).map(h=>h.trim().toLowerCase().replace(/['"]/g,''));
+    const data=[];
+    for(let i=1;i<lines.length;i++){
+      const cols=lines[i].split(sep).map(c=>c.trim().replace(/['"]/g,''));
+      const row={};headers.forEach((h,j)=>row[h]=cols[j]||'');
+      data.push({
+        tracking:row['order id']||row['spx tn']||row['tracking']||cols[0]||'',
+        sls_tn:row['sls tracking number']||row['sls_tn']||'',
+        to_code:row['to number']||row['to_code']||'',
+        zone:row['zone']||row['zone id']||'',
+        sort_code:row['sort code name']||row['sort_code']||'',
+        ward:row['ward name']||row['ward']||'',
+        status:row['status']||row['order status']||'',
+        driver_name:row['driver name']||'',
+        weight:row['chargeable weight']||'',
+      });
+    }
+    if(USE_SERVER){
+      const r=await api('/api/master','POST',{data});
+      if(r&&r.success){
+        el.innerHTML='✅ Upload: <strong>'+r.count+'</strong> dòng';el.style.color='var(--green)';return;
+      }
+    }
+    localStorage.setItem('masterData',JSON.stringify(data));
+    el.innerHTML='✅ Lưu local: '+data.length+' dòng';el.style.color='var(--green)';
+  }catch(e){
+    el.innerHTML='❌ '+e.message;el.style.color='var(--red)';
+  }
+}
+
+// ===== TODAY STATS =====
+async function loadTodayStats(){
+  if(USE_SERVER){
+    const r=await api('/api/stats');
+    if(r&&r.success) document.getElementById('stTotal').textContent=r.data.today_total;
+  }
+}
+
+// ===== TOAST =====
+function toast(msg,type='ok'){
+  document.querySelectorAll('.toast').forEach(el=>el.remove());
+  const el=document.createElement('div');
+  el.className='toast toast-'+type;
+  el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),300);},1800);
+}
+
+// ===== INIT =====
+async function init(){
+  try{
+    const r=await fetch(API+'/api/riders',{signal:AbortSignal.timeout(3000)});
+    setOnline(r.ok);
+  }catch(e){setOnline(false);}
+
+  await loadRiders();
+  await loadTodayStats();
+
+  const last=localStorage.getItem('lastRider');
+  if(last){
+    try{
+      rider=JSON.parse(last);
+      document.getElementById('selRider').value=rider.id;
+    }catch(e){}
+  }
+
+  document.addEventListener('touchstart',()=>{
+    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  },{once:true});
+  document.addEventListener('click',()=>{
+    if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  },{once:true});
+}
+
+init();
+</script>
+</body>
+</html>

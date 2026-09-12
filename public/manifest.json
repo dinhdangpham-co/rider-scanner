@@ -1,0 +1,16 @@
+{
+  "name": "SPX Rider Scanner",
+  "short_name": "SPX Scan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#FC6B03",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23FC6B03'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white'>📦</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

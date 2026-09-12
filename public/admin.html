@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPX Scanner — Bảng điều khiển</title>
+<style>
+  :root {
+    --spx:#FC6B03; --spx-dark:#E05E00; --spx-light:#FFF3E8;
+    --bg:#0F172A; --card:#1E293B; --card2:#334155;
+    --text:#F1F5F9; --text2:#94A3B8; --border:#475569;
+    --green:#10B981; --red:#EF4444; --purple:#8B5CF6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);padding:20px;}
+  h1{color:var(--spx);margin-bottom:6px;font-size:24px;}
+  .sub{color:var(--text2);font-size:13px;margin-bottom:20px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;}
+  .card h3{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:700;}
+  .big{font-size:44px;font-weight:900;color:var(--spx);line-height:1;}
+  .label{font-size:13px;color:var(--text2);margin-top:4px;}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th{text-align:left;padding:10px 8px;border-bottom:2px solid var(--border);color:var(--text2);font-weight:700;text-transform:uppercase;font-size:10px;}
+  td{padding:8px;border-bottom:1px solid var(--border);font-family:'SF Mono','Fira Code',monospace;}
+  tr:hover{background:var(--card2);}
+  .btn{display:inline-flex;align-items:center;padding:8px 16px;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;gap:6px;color:#fff;transition:opacity .2s;}
+  .btn:hover{opacity:.85;}
+  .btn-spx{background:var(--spx);}
+  .btn-green{background:var(--green);color:#000;}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);}
+  .toolbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+  .toolbar input,.toolbar select{padding:8px 12px;background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:12px;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;}
+  .badge-p{background:var(--green);color:#000;}
+  .badge-t{background:var(--purple);color:#fff;}
+  .pill{background:var(--card2);padding:8px 14px;border-radius:10px;display:inline-block;}
+  .pill .n{font-size:22px;font-weight:900;color:var(--spx);}
+  .pill .l{font-size:11px;color:var(--text2);font-weight:600;}
+  .refresh{font-size:11px;color:var(--text2);}
+  #logWrap{max-height:500px;overflow-y:auto;}
+</style>
+</head>
+<body>
+<h1>📊 SPX Scanner — Bảng điều khiển</h1>
+<p class="sub">Theo dõi realtime log quét đơn — tất cả tài xế. Tự refresh mỗi 10 giây.</p>
+
+<div class="grid">
+  <div class="card"><h3>Tổng đơn hôm nay</h3><div class="big" id="dTotal">-</div><div class="label">đơn đã quét</div></div>
+  <div class="card"><h3>Tài xế hoạt động</h3><div class="big" id="dRiders">-</div><div class="label">riders hôm nay</div></div>
+  <div class="card"><h3>Tổng tất cả</h3><div class="big" id="dAll">-</div><div class="label">tất cả thời gian</div></div>
+</div>
+
+<div class="card" style="margin-bottom:14px">
+  <h3>Đơn theo tài xế (hôm nay)</h3>
+  <div id="byRider" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+</div>
+
+<div class="card" style="margin-bottom:14px">
+  <h3>Đơn theo TO (hôm nay)</h3>
+  <div id="byTO" style="display:flex;flex-wrap:wrap;gap:10px"></div>
+</div>
+
+<div class="toolbar">
+  <button class="btn btn-spx" onclick="load()">🔄 Làm mới</button>
+  <button class="btn btn-green" onclick="exportCSV()">📥 Xuất CSV</button>
+  <input type="date" id="fDate" onchange="load()">
+  <select id="fRider" onchange="load()"><option value="">Tất cả tài xế</option></select>
+  <span class="refresh" id="lastRef">-</span>
+</div>
+
+<div class="card">
+  <h3>Chi tiết log quét</h3>
+  <div id="logWrap">
+    <table><thead><tr>
+      <th>#</th><th>Tài xế</th><th>Mã TO</th><th>Mã đơn</th><th>Loại</th><th>Zone</th><th>Thời gian (VN)</th>
+    </tr></thead><tbody id="tbody"></tbody></table>
+  </div>
+</div>
+
+<script>
+const API=location.origin;
+
+async function load(){
+  try{
+    const sr=await(await fetch(API+'/api/stats')).json();
+    if(sr.success){
+      document.getElementById('dTotal').textContent=sr.data.today_total;
+      document.getElementById('dRiders').textContent=sr.data.today_riders;
+      document.getElementById('dAll').textContent=sr.data.total_all_time;
+      const rd=document.getElementById('byRider');
+      rd.innerHTML=Object.entries(sr.data.by_rider).map(([n,c])=>
+        `<div class="pill"><div class="l">${n}</div><div class="n">${c}</div></div>`
+      ).join('')||'<span style="color:var(--text2)">Chưa có</span>';
+      const td=document.getElementById('byTO');
+      td.innerHTML=Object.entries(sr.data.by_to).map(([t,c])=>
+        `<div class="pill"><div class="l" style="font-family:monospace;font-size:10px">${t}</div><div class="n">${c}</div></div>`
+      ).join('')||'<span style="color:var(--text2)">Chưa có</span>';
+    }
+  }catch(e){}
+
+  let params='?limit=500';
+  const d=document.getElementById('fDate').value;
+  const r=document.getElementById('fRider').value;
+  if(d)params+=`&date=${d}`;
+  if(r)params+=`&rider_id=${r}`;
+
+  try{
+    const sr=await(await fetch(API+'/api/scans'+params)).json();
+    if(sr.success){
+      document.getElementById('tbody').innerHTML=sr.data.map((s,i)=>
+        `<tr>
+          <td>${i+1}</td>
+          <td>${s.rider_name}</td>
+          <td style="font-size:11px">${s.to_code}</td>
+          <td>${s.parcel_code||'-'}</td>
+          <td><span class="badge badge-${s.scan_type==='PARCEL'?'p':'t'}">${s.scan_type}</span></td>
+          <td>${s.zone||'-'}</td>
+          <td style="font-size:11px">${s.timestamp}</td>
+        </tr>`
+      ).join('');
+    }
+  }catch(e){}
+
+  try{
+    const rr=await(await fetch(API+'/api/riders')).json();
+    if(rr.success){
+      const sel=document.getElementById('fRider');
+      const cur=sel.value;
+      sel.innerHTML='<option value="">Tất cả tài xế</option>'+
+        rr.data.map(r=>`<option value="${r.id}">${r.name}</option>`).join('');
+      sel.value=cur;
+    }
+  }catch(e){}
+
+  document.getElementById('lastRef').textContent='Cập nhật: '+new Date().toLocaleTimeString('vi-VN');
+}
+
+function exportCSV(){
+  let p='';
+  const d=document.getElementById('fDate').value;
+  const r=document.getElementById('fRider').value;
+  if(d)p+=`?date=${d}`;
+  if(r)p+=`${p?'&':'?'}rider_id=${r}`;
+  window.open(API+'/api/scans/export'+p,'_blank');
+}
+
+load();
+setInterval(load,10000);
+</script>
+</body>
+</html>
