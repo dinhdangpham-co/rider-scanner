@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPX Scanner — Admin</title>
+<style>
+:root{--spx:#FC6B03;--spx-d:#D45A00;--spx-l:#FFF3E8;--ok:#10B981;--err:#EF4444;--warn:#F59E0B;--purple:#8B5CF6;--blue:#3B82F6;
+--bg:#F5F5F5;--card:#FFF;--text:#1A1A1A;--text2:#888;--bdr:#E5E5E5;--sh:0 1px 4px rgba(0,0,0,.06)}
+[data-dark]{--bg:#111;--card:#1C1C1E;--text:#F5F5F5;--text2:#8E8E93;--bdr:#333;--spx-l:#2C1800}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* Login */
+.lo-bg{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.lo-box{background:var(--card);border-radius:20px;padding:28px;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.1);border:1px solid var(--bdr)}
+.lo-box .logo{text-align:center;margin-bottom:20px}.lo-box .logo h2{font-size:20px;color:var(--spx);margin-top:6px}.lo-box .logo p{color:var(--text2);font-size:12px;margin-top:4px}
+.lo-box label{display:block;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.lo-box input{width:100%;padding:12px 14px;border:2px solid var(--bdr);border-radius:12px;font-size:14px;background:var(--bg);color:var(--text);margin-bottom:12px}
+.lo-box input:focus{outline:none;border-color:var(--spx)}
+.lo-box .btn{display:flex;align-items:center;justify-content:center;width:100%;padding:13px;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;gap:6px;margin-bottom:8px}
+.lo-box .btn-p{background:var(--spx);color:#fff}.lo-box .btn-p:hover{background:var(--spx-d)}
+.lo-box .btn-g{background:transparent;border:2px solid var(--spx);color:var(--spx)}
+.lo-box .msg{font-size:12px;text-align:center;margin-bottom:10px;padding:8px;border-radius:8px;display:none}
+.lo-box .msg.err{display:block;background:#FEE2E2;color:var(--err)}.lo-box .msg.ok{display:block;background:#D1FAE5;color:#065F46}
+/* Dash */
+.dash{display:none;padding:16px;max-width:1200px;margin:0 auto}.dash.show{display:block}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.top h1{font-size:20px;color:var(--spx);font-weight:800}.top .acts{display:flex;gap:6px;align-items:center}
+.td{width:36px;height:20px;border-radius:10px;border:none;background:var(--bdr);cursor:pointer;position:relative;transition:background .2s}
+.td.on{background:var(--spx)}.td::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}.td.on::after{transform:translateX(16px)}
+.ub{font-size:11px;color:var(--text2);background:var(--card);padding:4px 10px;border-radius:20px;border:1px solid var(--bdr)}
+.blo{padding:5px 10px;border:1px solid var(--err);color:var(--err);background:transparent;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px;box-shadow:var(--sh)}
+.card h3{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;font-weight:700}
+.big{font-size:36px;font-weight:900;color:var(--spx);line-height:1}.lbl{font-size:11px;color:var(--text2);margin-top:3px}
+.pill{background:var(--spx-l);padding:6px 12px;border-radius:8px;display:inline-block;margin:2px}
+.pill .n{font-size:18px;font-weight:900;color:var(--spx)}.pill .l{font-size:10px;color:var(--text2);font-weight:600}
+.toolbar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.toolbar input,.toolbar select{padding:7px 10px;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;color:var(--text);font-size:11px}
+.b2{display:inline-flex;align-items:center;padding:7px 12px;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;gap:4px;color:#fff}.b2:hover{opacity:.85}
+.b2-spx{background:var(--spx)}.b2-ok{background:var(--ok);color:#000}.b2-gh{background:transparent;border:1px solid var(--bdr);color:var(--text)}
+.b2-err{background:var(--err)}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{text-align:left;padding:8px 6px;border-bottom:2px solid var(--bdr);color:var(--text2);font-weight:700;text-transform:uppercase;font-size:9px}
+td{padding:7px 6px;border-bottom:1px solid var(--bdr);font-family:'SF Mono',monospace;font-size:11px}
+tr:hover{background:var(--spx-l)}
+.badge{display:inline-block;padding:2px 6px;border-radius:5px;font-size:9px;font-weight:700}
+.badge-ok{background:var(--ok);color:#fff}.badge-p{background:var(--warn);color:#000}.badge-t{background:var(--purple);color:#fff}
+.tabs{display:flex;gap:2px;margin-bottom:14px;border-bottom:2px solid var(--bdr);overflow-x:auto}
+.tab{padding:8px 14px;border:none;background:transparent;color:var(--text2);font-weight:600;font-size:12px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
+.tab.on{color:var(--spx);border-bottom-color:var(--spx)}.tp{display:none}.tp.on{display:block}
+.cfg label{display:block;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:4px}
+.cfg input[type=text],.cfg input[type=email],.cfg input[type=password]{width:100%;padding:8px 10px;border:1px solid var(--bdr);border-radius:8px;font-size:11px;background:var(--bg);color:var(--text);margin-bottom:6px;font-family:monospace}
+.cfg input:focus{outline:none;border-color:var(--spx)}
+.cfg-st{font-size:11px;margin-top:4px;margin-bottom:12px}
+#logW{max-height:500px;overflow-y:auto}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="lo-bg" id="loginScr">
+  <div class="lo-box" id="loginBox">
+    <div class="logo"><div style="font-size:36px">📦</div><h2>SPX Scanner Admin</h2><p>Đăng nhập để truy cập bảng điều khiển</p></div>
+    <div class="msg" id="loginMsg"></div>
+    <div id="loginForm">
+      <label>Email</label><input type="email" id="lEmail" placeholder="email@spxexpress.com" autocomplete="email">
+      <label>Mật khẩu</label><input type="password" id="lPass" placeholder="••••••••">
+      <button class="btn btn-p" onclick="doLogin()">🔐 Đăng nhập</button>
+      <button class="btn btn-g" onclick="showRegister()">📝 Đăng ký tài khoản mới</button>
+    </div>
+    <div id="regForm" style="display:none">
+      <label>Email</label><input type="email" id="rEmail" placeholder="email@spxexpress.com" autocomplete="email">
+      <label>Mật khẩu</label><input type="password" id="rPass" placeholder="Tối thiểu 4 ký tự">
+      <button class="btn btn-p" onclick="doRegister()">📝 Đăng ký</button>
+      <button class="btn btn-g" onclick="showLogin()">← Quay lại đăng nhập</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash" id="dashboard">
+  <div class="top">
+    <h1>📊 SPX Scanner Admin</h1>
+    <div class="acts">
+      <span class="ub" id="userB">👤 Admin</span>
+      <button class="td" id="dkBtn" onclick="togDark()" title="Dark mode"></button>
+      <button class="blo" onclick="logout()">Thoát</button>
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="stab('ov')" data-t="ov">📊 Tổng quan</button>
+    <button class="tab" onclick="stab('log')" data-t="log">📝 Log quét</button>
+    <button class="tab" onclick="stab('data')" data-t="data">🔗 Dữ liệu</button>
+    <button class="tab" onclick="stab('user')" data-t="user">👥 Users</button>
+    <button class="tab" onclick="stab('rider')" data-t="rider">🏍️ Tài xế</button>
+  </div>
+
+  <!-- Overview -->
+  <div class="tp on" id="t-ov">
+    <div class="grid">
+      <div class="card"><h3>Đơn hôm nay</h3><div class="big" id="dT">-</div><div class="lbl">đã quét</div></div>
+      <div class="card"><h3>Tài xế</h3><div class="big" id="dR">-</div><div class="lbl">hoạt động</div></div>
+      <div class="card"><h3>Tổng</h3><div class="big" id="dA">-</div><div class="lbl">all time</div></div>
+      <div class="card"><h3>Master data</h3><div class="big" id="dM">-</div><div class="lbl">dòng</div></div>
+    </div>
+    <div class="card" style="margin-bottom:12px"><h3>Theo tài xế</h3><div id="byR" style="display:flex;flex-wrap:wrap;gap:4px"></div></div>
+    <div class="card"><h3>Theo TO</h3><div id="byT" style="display:flex;flex-wrap:wrap;gap:4px"></div></div>
+  </div>
+
+  <!-- Logs -->
+  <div class="tp" id="t-log">
+    <div class="toolbar">
+      <button class="b2 b2-spx" onclick="loadLogs()">🔄 Làm mới</button>
+      <button class="b2 b2-ok" onclick="dlCSV()">📥 CSV</button>
+      <input type="date" id="fDate" onchange="loadLogs()">
+      <select id="fRider" onchange="loadLogs()"><option value="">Tất cả</option></select>
+      <input type="text" id="fSearch" placeholder="Tìm mã đơn..." oninput="loadLogs()" style="min-width:120px">
+    </div>
+    <div class="card"><div id="logW"><table><thead><tr><th>#</th><th>Tài xế</th><th>TO</th><th>Mã đơn</th><th>Zone</th><th>Sort</th><th>Thời gian</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+  </div>
+
+  <!-- Data & Sync -->
+  <div class="tp" id="t-data">
+    <div class="card cfg">
+      <h3>🔄 Google Sheets Sync (Apps Script)</h3>
+      <p style="font-size:11px;color:var(--text2);margin-bottom:10px">Kết nối Google Sheets qua Apps Script. Server tự sync mỗi 10 phút. Log scan + đăng ký user tự ghi vào Sheet.</p>
+      <label>🔗 URL Apps Script Web App</label>
+      <input type="text" id="cfgGAS" placeholder="https://script.google.com/macros/s/.../exec">
+      <label>🔑 API Key (phải khớp với Code.gs)</label>
+      <input type="text" id="cfgKey" placeholder="spx-scanner-2026">
+      <div style="display:flex;gap:6px;margin-top:4px">
+        <button class="b2 b2-spx" onclick="saveCfg()">💾 Lưu</button>
+        <button class="b2 b2-ok" onclick="doSync()">🔄 Sync ngay</button>
+        <button class="b2 b2-gh" onclick="checkSync()">📊 Trạng thái</button>
+      </div>
+      <div class="cfg-st" id="syncSt" style="margin-top:8px"></div>
+    </div>
+    <div class="card cfg">
+      <h3>📱 Telegram Alerts</h3>
+      <p style="font-size:11px;color:var(--text2);margin-bottom:8px">Bot token + Chat ID đã cấu hình qua biến môi trường Render.</p>
+      <button class="b2 b2-spx" onclick="testTG()">📤 Gửi tin nhắn test</button>
+      <div class="cfg-st" id="tgSt"></div>
+    </div>
+    <div class="card cfg">
+      <h3>📄 Upload file CSV/TSV (fallback)</h3>
+      <input type="file" id="fileUp" accept=".csv,.tsv,.txt" style="font-size:11px" onchange="uploadFile()">
+      <div class="cfg-st" id="fileSt"></div>
+    </div>
+    <div class="card" style="font-size:11px;color:var(--text2)">
+      <h3>📖 Hướng dẫn cài Apps Script</h3>
+      <ol style="padding-left:16px;line-height:1.8">
+        <li>Mở Google Sheets → <strong>Extensions → Apps Script</strong></li>
+        <li>Xóa code cũ → paste file <code>Code.gs</code> (đã cung cấp)</li>
+        <li>Sửa <code>SHEET_ID</code> và <code>API_KEY</code> trong code</li>
+        <li><strong>Deploy → New deployment</strong> → Type: Web app</li>
+        <li>Execute as: <strong>Me</strong> | Access: <strong>Anyone</strong></li>
+        <li>Copy URL → dán vào ô "URL Apps Script" bên trên</li>
+        <li>Bấm <strong>Lưu</strong> → <strong>Sync ngay</strong></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Users -->
+  <div class="tp" id="t-user">
+    <div class="card cfg">
+      <h3>➕ Thêm user thủ công</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:end">
+        <div><label>Email</label><input type="email" id="nuEmail" placeholder="email@..." style="margin:0"></div>
+        <div><label>Mật khẩu</label><input type="text" id="nuPass" placeholder="pass" style="margin:0"></div>
+        <button class="b2 b2-spx" onclick="addUser()" style="height:34px">Thêm</button>
+      </div>
+    </div>
+    <div class="card"><h3>Danh sách Users</h3><div id="userList"></div></div>
+  </div>
+
+  <!-- Riders -->
+  <div class="tp" id="t-rider">
+    <div class="card"><h3>🏍️ Tài xế (RiderMap)</h3><div id="riderList" style="max-height:500px;overflow-y:auto"></div></div>
+  </div>
+</div>
+
+<script>
+const API=location.origin;let token=localStorage.getItem('at');
+
+// Auth
+function showLogin(){document.getElementById('loginForm').style.display='block';document.getElementById('regForm').style.display='none';clrMsg()}
+function showRegister(){document.getElementById('loginForm').style.display='none';document.getElementById('regForm').style.display='block';clrMsg()}
+function clrMsg(){const m=document.getElementById('loginMsg');m.className='msg';m.style.display='none'}
+function showMsg(txt,ok){const m=document.getElementById('loginMsg');m.textContent=txt;m.className='msg '+(ok?'ok':'err');m.style.display='block'}
+
+async function doLogin(){
+  const email=document.getElementById('lEmail').value.trim(),pass=document.getElementById('lPass').value.trim();
+  if(!email||!pass){showMsg('Nhập email và mật khẩu');return}
+  try{const r=await(await fetch(API+'/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})})).json();
+    if(r.success){token=r.token;localStorage.setItem('at',token);localStorage.setItem('ae',email);showDash(email)}
+    else showMsg(r.error||'Đăng nhập thất bại')
+  }catch(e){showMsg('Không kết nối được server')}
+}
+document.getElementById('lPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+async function doRegister(){
+  const email=document.getElementById('rEmail').value.trim(),pass=document.getElementById('rPass').value.trim();
+  if(!email||!pass){showMsg('Nhập email và mật khẩu');return}
+  try{const r=await(await fetch(API+'/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})})).json();
+    if(r.success){showMsg(r.message||'Đăng ký thành công! Chờ Admin duyệt.',true);setTimeout(showLogin,3000)}
+    else showMsg(r.error||'Đăng ký thất bại')
+  }catch(e){showMsg('Không kết nối được server')}
+}
+
+function logout(){token=null;localStorage.removeItem('at');localStorage.removeItem('ae');document.getElementById('loginScr').style.display='flex';document.getElementById('dashboard').classList.remove('show')}
+function showDash(email){document.getElementById('loginScr').style.display='none';document.getElementById('dashboard').classList.add('show');document.getElementById('userB').textContent='👤 '+(email||'Admin');loadAll()}
+
+// Dark
+function togDark(){const on=document.documentElement.toggleAttribute('data-dark');document.getElementById('dkBtn').classList.toggle('on',on);localStorage.setItem('dk',on?'1':'0')}
+if(localStorage.getItem('dk')==='1'){document.documentElement.setAttribute('data-dark','');document.getElementById('dkBtn').classList.add('on')}
+
+// Tabs
+function stab(t){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tp').forEach(p=>p.classList.toggle('on',p.id==='t-'+t));if(t==='log')loadLogs();if(t==='rider')loadRiders();if(t==='data')loadCfg();if(t==='user')loadUsers()}
+
+async function loadAll(){loadStats();loadLogs();loadCfg();loadUsers()}
+
+async function loadStats(){
+  try{const s=await(await fetch(API+'/api/stats')).json();if(s.success){
+    document.getElementById('dT').textContent=s.data.today_total;document.getElementById('dR').textContent=s.data.today_riders;document.getElementById('dA').textContent=s.data.total_all_time;
+    document.getElementById('byR').innerHTML=Object.entries(s.data.by_rider).map(([n,c])=>`<div class="pill"><div class="l">${n}</div><div class="n">${c}</div></div>`).join('')||'<span style="color:var(--text2)">—</span>';
+    document.getElementById('byT').innerHTML=Object.entries(s.data.by_to).map(([t,c])=>`<div class="pill"><div class="l" style="font-family:monospace;font-size:9px">${t}</div><div class="n">${c}</div></div>`).join('')||'<span style="color:var(--text2)">—</span>'}
+    const m=await(await fetch(API+'/api/master/info')).json();if(m.success)document.getElementById('dM').textContent=m.count;
+  }catch(e){}}
+
+async function loadLogs(){
+  let p='?limit=500';const d=document.getElementById('fDate').value,r=document.getElementById('fRider').value,s=document.getElementById('fSearch').value;
+  if(d)p+=`&date=${d}`;if(r)p+=`&rider_id=${r}`;if(s)p+=`&search=${encodeURIComponent(s)}`;
+  try{const res=await(await fetch(API+'/api/scans'+p)).json();if(res.success){
+    document.getElementById('tbody').innerHTML=res.data.map((x,i)=>`<tr><td>${i+1}</td><td style="font-family:inherit">${x.rider_name}</td><td style="font-size:9px">${x.to_code}</td><td>${x.parcel_code||'-'}</td><td>${x.zone||'-'}</td><td style="font-size:9px">${x.sort_code||'-'}</td><td style="font-size:9px">${x.timestamp.replace('T',' ').slice(0,19)}</td></tr>`).join('')}
+    const rr=await(await fetch(API+'/api/riders')).json();if(rr.success){const sel=document.getElementById('fRider');const cv=sel.value;sel.innerHTML='<option value="">Tất cả</option>'+rr.data.map(r=>`<option value="${r.id}">${r.name}</option>`).join('');sel.value=cv}
+  }catch(e){}}
+function dlCSV(){let p='';const d=document.getElementById('fDate').value,r=document.getElementById('fRider').value;if(d)p+=`?date=${d}`;if(r)p+=`${p?'&':'?'}rider_id=${r}`;window.open(API+'/api/scans/export'+p,'_blank')}
+
+async function loadCfg(){try{const c=await(await fetch(API+'/api/config')).json();if(c.success){if(c.data.gas_url)document.getElementById('cfgGAS').value=c.data.gas_url;if(c.data.gas_key)document.getElementById('cfgKey').value=c.data.gas_key;if(c.data.sync){const s=c.data.sync;document.getElementById('syncSt').innerHTML=`Sync: ${s.status||'chưa'} | Last: ${(s.last||'--').slice(0,19)} | Data: ${c.data.master_count} dòng | Riders: ${c.data.rider_count}`}}}catch(e){}}
+async function saveCfg(){const gas=document.getElementById('cfgGAS').value.trim(),key=document.getElementById('cfgKey').value.trim();try{await fetch(API+'/api/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({gas_url:gas,gas_key:key})});document.getElementById('syncSt').innerHTML='✅ Đã lưu';document.getElementById('syncSt').style.color='var(--ok)'}catch(e){document.getElementById('syncSt').innerHTML='❌ Lỗi'}}
+async function doSync(){const el=document.getElementById('syncSt');el.innerHTML='⏳ Đang sync...';el.style.color='var(--text)';try{await fetch(API+'/api/sync',{method:'POST'});setTimeout(checkSync,3000)}catch(e){el.innerHTML='❌ '+e.message}}
+async function checkSync(){try{const r=await(await fetch(API+'/api/sync/status')).json();if(r.success){const s=r.data;const el=document.getElementById('syncSt');el.innerHTML=`<strong>Status:</strong> ${s.status} | <strong>Last:</strong> ${(s.last||'--').slice(0,19)}<br><strong>Master:</strong> ${s.master_count} dòng | <strong>Riders:</strong> ${s.rider_count}${s.error?'<br>❌ '+s.error:''}`;el.style.color=s.status==='ok'?'var(--ok)':'var(--err)';loadStats()}}catch(e){}}
+async function testTG(){const el=document.getElementById('tgSt');try{const r=await(await fetch(API+'/api/telegram/test',{method:'POST'})).json();el.innerHTML=r.success?'✅ Đã gửi!':'❌ '+r.error;el.style.color=r.success?'var(--ok)':'var(--err)'}catch(e){el.innerHTML='❌ Lỗi kết nối'}}
+async function uploadFile(){const file=document.getElementById('fileUp').files[0];if(!file)return;const el=document.getElementById('fileSt');el.textContent='⏳ Xử lý...';try{const txt=await file.text();const lines=txt.split('\n').filter(l=>l.trim());if(lines.length<2)throw new Error('File rỗng');const sep=lines[0].includes('\t')?'\t':',';const hdr=lines[0].split(sep).map(h=>h.trim().replace(/^"|"$/g,'').replace(/^\uFEFF/,''));const find=(...k)=>hdr.find(h=>k.some(x=>h.toLowerCase().includes(x)))||'';const data=[];for(let i=1;i<lines.length;i++){const cols=lines[i].split(sep).map(c=>c.trim().replace(/^"|"$/g,''));const row={};hdr.forEach((h,j)=>row[h]=cols[j]||'');data.push({tracking:row[find('order id','spx tn','tracking')]||cols[0]||'',sls_tn:row[find('sls tracking')]||'',zone:row[find('zone id')]||row[find('zone')]||'',sort_code:row[find('sort code')]||'',ward:row[find('ward')]||'',status:row[find('status')]||'',driver_name:row[find('driver name')]||'',weight:row[find('weight')]||''})}const r=await(await fetch(API+'/api/master/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data})})).json();el.innerHTML=`✅ Upload: <strong>${r.count}</strong> dòng`;el.style.color='var(--ok)';loadStats()}catch(e){el.innerHTML='❌ '+e.message;el.style.color='var(--err)'}}
+
+// Users
+async function loadUsers(){try{const r=await(await fetch(API+'/api/users')).json();if(r.success){document.getElementById('userList').innerHTML=`<table><thead><tr><th>Email</th><th>Trạng thái</th><th>Vai trò</th><th>Ngày tạo</th><th>Hành động</th></tr></thead><tbody>`+r.data.map(u=>`<tr><td style="font-family:inherit">${u.email}</td><td><span class="badge badge-${u.status==='Approved'?'ok':'p'}">${u.status}</span></td><td>${u.role||'User'}</td><td style="font-size:9px">${(u.created||'').slice(0,10)}</td><td>${u.status!=='Approved'?`<button class="b2 b2-ok" onclick="approveUser('${u.email}')" style="padding:3px 8px;font-size:10px">Duyệt</button> <button class="b2 b2-err" onclick="rejectUser('${u.email}')" style="padding:3px 8px;font-size:10px">Xóa</button>`:'✅'}</td></tr>`).join('')+'</tbody></table>'}}catch(e){}}
+async function addUser(){const email=document.getElementById('nuEmail').value.trim(),pass=document.getElementById('nuPass').value.trim();if(!email||!pass)return;await fetch(API+'/api/users',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass,status:'Approved'})});document.getElementById('nuEmail').value='';document.getElementById('nuPass').value='';loadUsers()}
+async function approveUser(email){await fetch(API+'/api/users/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});loadUsers()}
+async function rejectUser(email){if(!confirm('Xóa user '+email+'?'))return;await fetch(API+'/api/users/reject',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});loadUsers()}
+
+// Riders
+async function loadRiders(){try{const r=await(await fetch(API+'/api/riders')).json();if(r.success){document.getElementById('riderList').innerHTML=`<table><thead><tr><th>ID</th><th>Họ và tên</th><th>Zone</th></tr></thead><tbody>`+r.data.map(d=>`<tr><td>${d.id}</td><td style="font-family:inherit;font-weight:600">${d.name}</td><td><span class="badge badge-t">${d.zone||'-'}</span></td></tr>`).join('')+'</tbody></table>'}}catch(e){}}
+
+setInterval(()=>{if(document.getElementById('dashboard').classList.contains('show'))loadStats()},15000);
+if(token&&localStorage.getItem('ae'))showDash(localStorage.getItem('ae'));
+</script>
+</body>
+</html>
