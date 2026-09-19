@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SPX Scanner AI — Dashboard</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+:root{
+  --bg:#FFFFFF;--bg2:#F7F7F8;--card:#FFFFFF;--card2:#F7F7F8;
+  --text:#1A1A1A;--text2:#6B7280;--text3:#9CA3AF;
+  --bdr:#E5E7EB;--bdr2:#D1D5DB;
+  --spx:#EE4D2D;--spx2:#D73B1D;--spx-bg:#FFF1ED;
+  --ok:#059669;--ok-bg:#ECFDF5;--warn:#D97706;--warn-bg:#FFFBEB;--err:#DC2626;--err-bg:#FEF2F2;
+  --purple:#7C3AED;--blue:#2563EB;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --sh2:0 4px 12px rgba(0,0,0,.08);
+  --r:12px;--r2:8px;
+}
+[data-theme="dark"]{
+  --bg:#18181B;--bg2:#1F1F23;--card:#27272A;--card2:#303036;
+  --text:#FAFAFA;--text2:#A1A1AA;--text3:#71717A;
+  --bdr:#3F3F46;--bdr2:#52525B;
+  --spx:#FF6B4A;--spx2:#FF5533;--spx-bg:#2D1A14;
+  --ok:#34D399;--ok-bg:#0D2E23;--warn:#FBBF24;--warn-bg:#2D2305;--err:#F87171;--err-bg:#2D1414;
+  --sh:0 1px 3px rgba(0,0,0,.2);--sh2:0 4px 12px rgba(0,0,0,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg2);color:var(--text);min-height:100vh;font-size:13px;line-height:1.5}
+
+/* Login */
+.lo{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px;background:var(--bg2)}
+.lo-box{background:var(--card);border-radius:16px;padding:32px;width:100%;max-width:380px;box-shadow:var(--sh2);border:1px solid var(--bdr)}
+.lo-box .logo{text-align:center;margin-bottom:24px}
+.lo-box .logo h2{font-size:20px;font-weight:800;color:var(--spx);margin-top:8px;letter-spacing:-.3px}
+.lo-box .logo p{color:var(--text2);font-size:12px}
+.lo-box label{display:block;font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.lo-box input{width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:var(--r2);font-size:13px;background:var(--bg2);color:var(--text);margin-bottom:12px;font-family:inherit;transition:border .15s}
+.lo-box input:focus{outline:none;border-color:var(--spx)}
+.pw-wrap{position:relative}.pw-wrap input{padding-right:36px}
+.pw-eye{position:absolute;right:8px;top:50%;transform:translateY(-60%);background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:2px}
+.lo-box .err{font-size:12px;text-align:center;padding:8px;border-radius:var(--r2);background:var(--err-bg);color:var(--err);margin-bottom:10px;display:none}
+.lo-box .ok{font-size:12px;text-align:center;padding:8px;border-radius:var(--r2);background:var(--ok-bg);color:var(--ok);margin-bottom:10px;display:none}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border:none;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;gap:6px;font-family:inherit;transition:all .15s}
+.btn:hover{opacity:.9}.btn:active{transform:scale(.98)}
+.btn-spx{background:var(--spx);color:#fff;width:100%}.btn-spx:hover{background:var(--spx2)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--bdr);width:100%}
+.btn-sm{padding:6px 12px;font-size:11px;border-radius:6px}
+.btn-ok{background:var(--ok);color:#fff}.btn-err{background:var(--err);color:#fff}
+.btn-icon{padding:6px;border-radius:6px;background:var(--bg2);border:1px solid var(--bdr);color:var(--text2);cursor:pointer;font-size:14px}
+.btn-icon:hover{background:var(--card2)}
+
+/* Layout */
+.dash{display:none}.dash.on{display:block}
+.hdr{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--bdr);padding:0 16px}
+.hdr-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:48px}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr-left h1{font-size:15px;font-weight:800;color:var(--spx);letter-spacing:-.3px}
+.hdr-left .sub{font-size:10px;color:var(--text3)}
+.hdr-right{display:flex;align-items:center;gap:8px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:600;border:1px solid}
+.badge-ok{color:var(--ok);border-color:var(--ok);background:var(--ok-bg)}
+.badge-err{color:var(--err);border-color:var(--err);background:var(--err-bg)}
+.badge-warn{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+.badge-purple{color:var(--purple);border-color:var(--purple);background:rgba(124,58,237,.08)}
+
+.main{max-width:1280px;margin:0 auto;padding:16px}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+.kpi .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.kpi .lbl{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.3px}
+.kpi .ico{font-size:20px}
+.kpi .val{font-size:28px;font-weight:900;letter-spacing:-.5px;line-height:1}
+.kpi .sub{font-size:11px;color:var(--text3);margin-top:4px}
+
+/* Tabs */
+.tabs{display:flex;gap:2px;border-bottom:2px solid var(--bdr);margin-bottom:16px;overflow-x:auto}
+.tab{padding:10px 16px;border:none;background:transparent;color:var(--text2);font-weight:600;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;font-family:inherit;transition:all .15s}
+.tab:hover{color:var(--text)}.tab.on{color:var(--spx);border-bottom-color:var(--spx)}
+.tp{display:none}.tp.on{display:block}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.card-h{padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
+.card-h h3{font-size:13px;font-weight:700}
+.card-b{padding:16px}
+.card+.card{margin-top:12px}
+
+/* Table */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:8px 10px;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.3px;border-bottom:2px solid var(--bdr);background:var(--bg2);position:sticky;top:0}
+td{padding:7px 10px;border-bottom:1px solid var(--bdr);font-size:12px}
+tr:hover td{background:var(--spx-bg)}
+.mono{font-family:'SF Mono','Fira Code',Consolas,monospace;font-size:11px}
+
+/* Toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center}
+.toolbar input,.toolbar select{padding:6px 10px;border:1px solid var(--bdr);border-radius:6px;font-size:11px;background:var(--bg2);color:var(--text);font-family:inherit}
+.toolbar input:focus,.toolbar select:focus{outline:none;border-color:var(--spx)}
+
+/* Config inputs */
+.cfg-row{margin-bottom:12px}
+.cfg-row label{display:block;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px}
+.cfg-row input{width:100%;padding:8px 10px;border:1px solid var(--bdr);border-radius:6px;font-size:11px;background:var(--bg2);color:var(--text);font-family:'SF Mono',monospace,inherit}
+.cfg-row input:focus{outline:none;border-color:var(--spx)}
+.cfg-st{font-size:11px;margin-top:6px}
+
+/* Scroll */
+.scroll{max-height:500px;overflow-y:auto}
+
+/* Status chips */
+.chip{display:inline-flex;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.chip-ok{background:var(--ok-bg);color:var(--ok)}.chip-warn{background:var(--warn-bg);color:var(--warn)}
+.chip-err{background:var(--err-bg);color:var(--err)}.chip-purple{background:rgba(124,58,237,.08);color:var(--purple)}
+.chip-blue{background:rgba(37,99,235,.08);color:var(--blue)}
+
+/* Grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:768px){.g2{grid-template-columns:1fr}}
+
+/* Alert */
+.alert{padding:12px 16px;border-radius:var(--r2);margin-bottom:12px;font-size:12px;display:flex;align-items:flex-start;gap:8px}
+.alert-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn)}
+.alert-ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok)}
+
+/* Theme toggle */
+.theme-btn{width:32px;height:18px;border-radius:9px;border:none;background:var(--bdr2);cursor:pointer;position:relative;transition:background .2s}
+.theme-btn.on{background:var(--spx)}
+.theme-btn::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.theme-btn.on::after{transform:translateX(14px)}
+
+/* ★ Sync overlay */
+.sync-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center}
+.sync-box{background:var(--card);border-radius:16px;padding:32px 40px;text-align:center;box-shadow:var(--sh2);border:1px solid var(--bdr);max-width:340px}
+.sync-box .spin{width:40px;height:40px;border:3px solid var(--bdr);border-top-color:var(--spx);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 16px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.sync-box h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.sync-box p{font-size:12px;color:var(--text2)}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+<div class="lo" id="loginScr">
+  <div class="lo-box">
+    <div style="text-align:right;margin-bottom:-16px;display:flex;justify-content:flex-end;gap:6px;align-items:center">
+      <button onclick="togLang()" style="font-size:10px;padding:2px 8px;border-radius:10px;border:1px solid var(--bdr);background:var(--bg2);color:var(--text2);cursor:pointer;font-weight:600" id="loLang">EN/VI</button>
+      <button class="theme-btn" id="loTheme" onclick="togTheme()" title="Light / Dark" style="transform:scale(.9)"></button>
+    </div>
+    <div class="logo"><div style="font-size:36px">📦</div><h2>SPX Scanner AI</h2><p id="loSub">Đăng nhập Admin Dashboard</p></div>
+    <div class="err" id="loErr"></div><div class="ok" id="loOk"></div>
+    <div id="loForm">
+      <label>Email</label><input id="loEmail" placeholder="email@spxexpress.com" autocomplete="email">
+      <label>Mật khẩu</label><div class="pw-wrap"><input type="password" id="loPass" placeholder="••••••••"><button type="button" class="pw-eye" onclick="togPw('loPass',this)">👁</button></div>
+      <button class="btn btn-spx" onclick="doLogin()">Đăng nhập</button>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="showReg()">Đăng ký tài khoản mới</button>
+    </div>
+    <div id="regForm" style="display:none">
+      <label>Email</label><input id="regEmail" placeholder="email@spxexpress.com">
+      <label>Mật khẩu</label><div class="pw-wrap"><input type="password" id="regPass" placeholder="Tối thiểu 4 ký tự"><button type="button" class="pw-eye" onclick="togPw('regPass',this)">👁</button></div>
+      <button class="btn btn-spx" onclick="doReg()">Đăng ký</button>
+      <button class="btn btn-ghost" style="margin-top:8px" onclick="showLogin()">← Quay lại</button>
+    </div>
+  </div>
+</div>
+
+<!-- ★ SYNC OVERLAY — hien khi server dang dong bo du lieu -->
+<div class="sync-overlay" id="syncOverlay" style="display:none">
+  <div class="sync-box">
+    <div class="spin"></div>
+    <h3>Đang đồng bộ dữ liệu...</h3>
+    <p id="syncMsg">Kết nối Google Sheet và tải dữ liệu</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash" id="dash">
+  <div class="hdr"><div class="hdr-in">
+    <div class="hdr-left">
+      <span style="font-size:18px">📦</span>
+      <div><h1>SPX Scanner AI</h1><div class="sub" id="hubLabel">Hub: --</div></div>
+    </div>
+    <div class="hdr-right">
+      <span class="badge badge-ok" id="syncBadge">● Synced</span>
+      <button onclick="togLang()" style="font-size:10px;padding:2px 8px;border-radius:10px;border:1px solid var(--bdr);background:var(--bg2);color:var(--text2);cursor:pointer;font-weight:600" id="dashLang">EN</button>
+      <span style="font-size:11px;color:var(--text3)" id="userEmail">--</span>
+      <button class="theme-btn" id="themeBtn" onclick="togTheme()" title="Light / Dark"></button>
+      <button class="btn-icon" onclick="doLogout()" title="Đăng xuất" style="font-size:11px;padding:4px 10px;display:flex;align-items:center;gap:4px"><span style="font-size:14px">⏻</span>Logout</button>
+    </div>
+  </div></div>
+
+  <div class="main">
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi"><div class="top"><span class="lbl">Đơn hôm nay</span><span class="ico">📦</span></div><div class="val" id="kTotal">-</div><div class="sub" id="kTotalSub">parcels scanned</div></div>
+      <div class="kpi"><div class="top"><span class="lbl">Rider hoạt động</span><span class="ico">🏍️</span></div><div class="val" id="kRiders">-</div><div class="sub" id="kRidersSub">--</div></div>
+      <div class="kpi"><div class="top"><span class="lbl">TO hôm nay</span><span class="ico">📋</span></div><div class="val" id="kTO">-</div><div class="sub">transfer orders</div></div>
+      <div class="kpi"><div class="top"><span class="lbl">Master Data</span><span class="ico">🗄️</span></div><div class="val" id="kMaster">-</div><div class="sub" id="kMasterSub">rows loaded</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs" id="tabBar"></div>
+
+    <!-- Overview -->
+    <div class="tp on" id="t-overview">
+      <div class="g2">
+        <div class="card"><div class="card-h"><h3>Đơn theo Rider</h3></div><div class="card-b scroll" id="chartRider" style="max-height:400px"></div></div>
+        <div class="card"><div class="card-h"><h3>Đơn theo TO</h3></div><div class="card-b scroll" id="chartTO" style="max-height:400px"></div></div>
+      </div>
+      <div class="card" style="margin-top:12px" id="idleCard" style="display:none">
+        <div class="card-h"><h3 id="idleTitle">⚠️ Rider chưa quét</h3></div>
+        <div class="card-b" id="idleList"></div>
+      </div>
+      <!-- AI Alerts -->
+      <div class="card" style="margin-top:12px" id="aiAlertCard">
+        <div class="card-h"><h3>🤖 AI Cảnh báo</h3></div>
+        <div class="card-b" id="aiAlerts"><p style="color:var(--text3);text-align:center;padding:12px">Đang phân tích...</p></div>
+      </div>
+      <!-- Missing summary -->
+      <div class="card" style="margin-top:12px" id="missingSummary">
+        <div class="card-h"><h3>📉 Tổng hợp thiếu/thừa</h3></div>
+        <div class="card-b" id="missingBody"><p style="color:var(--text3);text-align:center;padding:12px">Chưa có dữ liệu</p></div>
+      </div>
+    </div>
+
+    <!-- TO Compare -->
+    <div class="tp" id="t-tocompare">
+      <div class="toolbar">
+        <input placeholder="Tim TO, rider..." id="toSearch" oninput="filterTOComp()" style="min-width:200px">
+        <select id="toFilter" onchange="filterTOComp()" style="padding:6px;border:1px solid var(--bdr);border-radius:6px;font-size:11px;background:var(--bg2);color:var(--text)"><option value="">Tat ca</option><option value="missing">Thieu</option><option value="extra">Thua</option><option value="match">Khop</option></select>
+        <button class="btn btn-sm btn-spx" onclick="loadTOCompare()" style="width:auto;padding:6px 10px">🔄</button>
+      </div>
+      <div class="card"><div class="card-b"><div class="scroll" id="toCompBody"></div></div></div>
+      <!-- Xa section -->
+      <div class="card" style="margin-top:12px"><div class="card-h"><h3>📦 TO Xá (1 đơn hàng = hàng cồng kềnh)</h3></div>
+      <div class="card-b"><div class="scroll" id="xaBody"><p style="color:var(--text3);text-align:center;padding:12px">Chưa có dữ liệu</p></div></div></div>
+    </div>
+
+    <!-- Riders -->
+    <div class="tp" id="t-riders">
+      <div class="toolbar">
+        <input placeholder="Tim rider, zone..." id="riderSearch" oninput="filterRiders()" style="min-width:180px">
+        <select id="riderFilter" onchange="filterRiders()" style="padding:6px;border:1px solid var(--bdr);border-radius:6px;font-size:11px;background:var(--bg2);color:var(--text)"><option value="">Tat ca</option><option value="active">Active</option><option value="idle">Idle</option></select>
+        <button class="btn btn-sm btn-spx" onclick="loadRiders()" style="width:auto;padding:6px 10px">🔄</button>
+        <span style="font-size:11px;color:var(--text3)" id="riderCountLabel">--</span>
+      </div>
+      <div class="card">
+      <div class="scroll" id="riderBody"></div></div>
+    </div>
+
+    <!-- Logs -->
+    <div class="tp" id="t-logs">
+      <div class="toolbar">
+        <input placeholder="Tìm mã đơn, rider, TO..." id="fSearch" oninput="loadLogs()" style="min-width:180px">
+        <input type="date" id="fDate" onchange="loadLogs()">
+        <button class="btn btn-sm btn-spx" onclick="loadLogs()">🔄</button>
+        <button class="btn btn-sm btn-ghost" onclick="window.open(API+hubQ('/api/scans/export'),'_blank')">📥 CSV</button>
+        <span style="font-size:11px;color:var(--text3)" id="logCount">--</span>
+      </div>
+      <div class="card"><div class="scroll" id="logBody"></div></div>
+    </div>
+
+    <!-- Users (Admin only) -->
+    <div class="tp" id="t-users">
+      <div class="card"><div class="card-h"><h3>Quản lý Users</h3></div><div class="card-b">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr auto;gap:6px;margin-bottom:12px;align-items:end" id="addUserRow">
+          <div><label style="font-size:10px;color:var(--text2)">Email</label><input id="nuEmail" placeholder="email@..." style="width:100%;padding:6px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text)"></div>
+          <div><label style="font-size:10px;color:var(--text2)">Pass</label><input id="nuPass" value="1234" style="width:100%;padding:6px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text)"></div>
+          <div><label style="font-size:10px;color:var(--text2)">Role</label><select id="nuRole" style="width:100%;padding:6px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text)"><option>Staff</option><option>Leader</option><option>Admin</option></select></div>
+          <div><label style="font-size:10px;color:var(--text2)">Hub</label><input id="nuHub" value="63BDG03" style="width:100%;padding:6px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text)"></div>
+          <div><label style="font-size:10px;color:var(--text2)">Scope</label><select id="nuScope" style="width:100%;padding:6px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text)"><option value="scan_only">scan_only</option><option value="dashboard,riders,logs,to_compare">Leader scope</option><option value="full">full</option></select></div>
+          <button class="btn btn-sm btn-spx" onclick="addUser()" style="height:30px">+ Thêm</button>
+        </div>
+        <div class="scroll" id="userBody"></div>
+      </div></div>
+    </div>
+
+    <!-- Hubs (Admin only) -->
+    <div class="tp" id="t-hubs">
+      <div class="card"><div class="card-h"><h3>Hub Management</h3></div><div class="card-b">
+        <div style="display:grid;grid-template-columns:1fr 2fr 3fr 1fr auto;gap:6px;margin-bottom:12px;align-items:end">
+          <div><label style="font-size:10px;color:var(--text2)">Hub ID</label><input id="nhId" placeholder="63BDG27" style="width:100%;padding:6px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text)"></div>
+          <div><label style="font-size:10px;color:var(--text2)">Tên Hub</label><input id="nhName" placeholder="63-BDG Binh Duong 27" style="width:100%;padding:6px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text)"></div>
+          <div><label style="font-size:10px;color:var(--text2)">GAS URL</label><input id="nhGas" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%;padding:6px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text);font-family:monospace"></div>
+          <div><label style="font-size:10px;color:var(--text2)">Key</label><input id="nhKey" value="spx-scanner-2026" style="width:100%;padding:6px 8px;border:1px solid var(--bdr);border-radius:4px;font-size:11px;background:var(--bg2);color:var(--text)"></div>
+          <button class="btn btn-sm btn-spx" onclick="addHub()" style="height:30px">+ Thêm</button>
+        </div>
+        <div class="scroll" id="hubBody"></div>
+      </div></div>
+    </div>
+
+    <!-- Config -->
+    <div class="tp" id="t-config">
+      <div class="g2">
+        <div class="card"><div class="card-h"><h3>🔗 Sync & GAS</h3></div><div class="card-b">
+          <div class="cfg-row"><label>Apps Script URL</label><input id="cfgGas" placeholder="https://script.google.com/macros/s/.../exec"></div>
+          <div class="cfg-row"><label>API Key</label><input id="cfgKey" placeholder="spx-scanner-2026"></div>
+          <div style="display:flex;gap:6px;margin-top:8px">
+            <button class="btn btn-sm btn-spx" onclick="saveCfg()">💾 Lưu</button>
+            <button class="btn btn-sm btn-ok" onclick="doSync()">🔄 Sync</button>
+            <button class="btn btn-sm btn-ghost" onclick="doBackup()">💾 Backup</button>
+            <button class="btn btn-sm btn-ghost" onclick="testTG()">📤 TG</button>
+          </div>
+          <div class="cfg-st" id="cfgSt"></div>
+        </div></div>
+        <div class="card"><div class="card-h"><h3>ℹ️ System</h3></div><div class="card-b" id="sysInfo" style="font-size:11px;color:var(--text2)"></div></div>
+      </div>
+    </div>
+
+    <!-- AI Chatbot floating -->
+    <div id="aiChat" style="position:fixed;bottom:16px;right:16px;z-index:90">
+      <div id="aiPanel" style="display:none;width:340px;max-height:460px;background:var(--card);border:1px solid var(--bdr);border-radius:16px;box-shadow:var(--sh2);margin-bottom:8px;overflow:hidden">
+        <div style="padding:10px 14px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;background:var(--spx-bg)">
+          <span style="font-weight:700;font-size:13px">🤖 AI Assistant <span style="font-size:9px;color:var(--text3)">(Grok AI)</span></span>
+          <button onclick="document.getElementById('aiPanel').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text2)">✕</button>
+        </div>
+        <div id="aiMsgs" style="height:300px;overflow-y:auto;padding:10px;font-size:12px"></div>
+        <div style="padding:8px;border-top:1px solid var(--bdr);display:flex;gap:6px">
+          <input id="aiInput" placeholder="Hỏi AI về hub, rider, TO..." style="flex:1;padding:8px 10px;border:1px solid var(--bdr);border-radius:8px;font-size:12px;background:var(--bg2);color:var(--text);font-family:inherit" onkeydown="if(event.key==='Enter')sendAI()">
+          <button class="btn btn-sm btn-spx" onclick="sendAI()" style="width:auto;padding:6px 14px">↑</button>
+        </div>
+      </div>
+      <button onclick="togAI()" style="width:50px;height:50px;border-radius:50%;background:var(--spx);border:none;color:#fff;font-size:22px;cursor:pointer;box-shadow:var(--sh2);transition:transform .15s" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform=''">🤖</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API=location.origin;
+const urlP=new URLSearchParams(location.search);
+const HUB=urlP.get('hub')||'63BDG03';
+function hubQ(ep){return ep+(ep.includes('?')?'&':'?')+'hub='+HUB}
+
+let myRole='Staff',myHub=HUB,myHubs=[];
+let refreshTimer=null, fastTimer=null;
+
+// Theme — default dark (set in HTML tag), respect saved preference
+function togTheme(){const d=document.documentElement.dataset.theme==='dark'?'':'dark';document.documentElement.dataset.theme=d;document.querySelectorAll('.theme-btn').forEach(b=>b.classList.toggle('on',d==='dark'));localStorage.setItem('theme',d)}
+const savedTheme=localStorage.getItem('theme');
+if(savedTheme===''){document.documentElement.dataset.theme='';} // user chose light
+else{document.documentElement.dataset.theme='dark';document.querySelectorAll('.theme-btn').forEach(b=>b.classList.add('on'))}
+
+// Password eye toggle
+function togPw(id,btn){const inp=document.getElementById(id);if(inp.type==='password'){inp.type='text';btn.textContent='🙈'}else{inp.type='password';btn.textContent='👁'}}
+
+// Fix Vietnamese encoding (replacement chars from sheet data)
+function fv(s){return(s||'').replace(/�/g,'').replace(/�/g,'').trim()}
+
+// Auth
+function showLogin(){document.getElementById('loForm').style.display='';document.getElementById('regForm').style.display='none';document.getElementById('loSub').textContent='Đăng nhập Admin Dashboard'}
+function showReg(){document.getElementById('loForm').style.display='none';document.getElementById('regForm').style.display='';document.getElementById('loSub').textContent='Đăng ký tài khoản mới'}
+function showErr(m){const e=document.getElementById('loErr');e.textContent=m;e.style.display='block';document.getElementById('loOk').style.display='none'}
+function showOk(m){const e=document.getElementById('loOk');e.textContent=m;e.style.display='block';document.getElementById('loErr').style.display='none'}
+
+async function doLogin(){
+  const email=document.getElementById('loEmail').value.trim(),pass=document.getElementById('loPass').value;
+  if(!email||!pass){showErr('Nhập email và mật khẩu');return}
+  try{const r=await(await fetch(API+hubQ('/api/login'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})})).json();
+    if(r.success){localStorage.setItem('se',email);localStorage.setItem('sr',r.role||'Staff');localStorage.setItem('sh',r.hub||HUB);enterDash(email,r.role,r.hub,r.hubs)}
+    else showErr(r.error||'Thất bại')
+  }catch(e){showErr('Không kết nối server')}
+}
+document.getElementById('loPass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+async function doReg(){
+  const email=document.getElementById('regEmail').value.trim(),pass=document.getElementById('regPass').value;
+  if(!email||!pass){showErr('Nhập email và mật khẩu');return}
+  try{const r=await(await fetch(API+hubQ('/api/register'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pass})})).json();
+    if(r.success){showOk(r.message||'OK');setTimeout(showLogin,2000)}else showErr(r.error||'Thất bại')
+  }catch(e){showErr('Không kết nối server')}
+}
+
+function doLogout(){localStorage.removeItem('se');localStorage.removeItem('sr');document.getElementById('loginScr').style.display='flex';document.getElementById('dash').classList.remove('on');if(refreshTimer)clearInterval(refreshTimer);if(fastTimer)clearInterval(fastTimer)}
+
+function enterDash(email,role,hub,hubs){
+  myRole=role||'Staff';myHub=hub||HUB;myHubs=hubs||[HUB];
+  document.getElementById('loginScr').style.display='none';
+  document.getElementById('dash').classList.add('on');
+  document.getElementById('userEmail').textContent=email;
+  // Build tabs based on role
+  const tabs=[['overview','📊 Tổng quan']];
+  if(myRole!=='Staff'){tabs.push(['tocompare','🔀 TO Compare']);tabs.push(['riders','🏍️ Riders'])}
+  tabs.push(['logs','📝 Logs']);
+  if(myRole==='Admin'){tabs.push(['users','👥 Users']);tabs.push(['hubs','🏢 Hubs'])}
+  if(myRole==='Admin'||myRole==='Leader')tabs.push(['config','⚙️ Config']);
+  document.getElementById('tabBar').innerHTML=tabs.map(([id,lbl],i)=>`<button class="tab${i===0?' on':''}" onclick="stab('${id}')" data-t="${id}">${lbl}</button>`).join('');
+
+  // ★ FIX: Trigger sync ngay + show overlay neu chua co data
+  initSync();
+}
+
+// ★ FIX #3: Smart sync on dashboard load
+async function initSync(){
+  // Check current sync status
+  const sy = await api('/api/sync/status');
+  const hasData = sy?.data?.master_count > 0 || sy?.data?.scan_count > 0;
+  const isSynced = sy?.data?.status === 'ok';
+
+  if (!hasData && !isSynced) {
+    // Server vua wake up, chua co data → show overlay + trigger sync
+    showSyncOverlay('Kết nối Google Sheet và tải dữ liệu...');
+    api('/api/sync','POST'); // trigger sync
+
+    // Poll cho den khi sync xong
+    let polls = 0;
+    const pollFn = async () => {
+      polls++;
+      const st = await api('/api/sync/status');
+      if (st?.data?.status === 'ok' || polls > 30) { // max 90s
+        hideSyncOverlay();
+        loadAll();
+        startRefresh();
+      } else {
+        const mc = st?.data?.master_count || 0;
+        const rc = st?.data?.rider_count || 0;
+        const sc = st?.data?.scan_count || 0;
+        document.getElementById('syncMsg').textContent =
+          `Master: ${mc} | Riders: ${rc} | Scans: ${sc}`;
+        setTimeout(pollFn, 3000);
+      }
+    };
+    setTimeout(pollFn, 3000);
+  } else {
+    // Da co data → load ngay, trigger sync ngam de cap nhat
+    loadAll();
+    if (!isSynced) api('/api/sync','POST');
+    startRefresh();
+  }
+}
+
+function showSyncOverlay(msg){
+  document.getElementById('syncOverlay').style.display='flex';
+  document.getElementById('syncMsg').textContent=msg||'';
+}
+function hideSyncOverlay(){
+  document.getElementById('syncOverlay').style.display='none';
+}
+
+function startRefresh(){
+  // Fast poll 3s trong 60s dau, sau do 15s
+  let fastCount = 0;
+  if(fastTimer) clearInterval(fastTimer);
+  fastTimer = setInterval(()=>{
+    fastCount++;
+    loadAll();
+    if(fastCount >= 20){ clearInterval(fastTimer); fastTimer=null; }
+  }, 3000);
+
+  if(refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = setInterval(loadAll, 15000);
+}
+
+function stab(t){document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tp').forEach(p=>p.classList.toggle('on',p.id==='t-'+t));if(t==='logs')loadLogs();if(t==='tocompare')loadTOCompare();if(t==='riders')loadRiders();if(t==='users')loadUsers();if(t==='hubs')loadHubs();if(t==='config')loadCfg()}
+
+// Data loading
+async function api(ep,m,b){try{const o={method:m||'GET',headers:{'Content-Type':'application/json'}};if(b)o.body=JSON.stringify(b);return(await fetch(API+hubQ(ep),o)).json()}catch(e){return null}}
+
+async function loadAll(){
+  const[s,sy,cfg]=await Promise.all([api('/api/stats'),api('/api/sync/status'),api('/api/config')]);
+  if(s?.success){
+    const d=s.data;
+    document.getElementById('kTotal').textContent=d.today_total||0;
+    document.getElementById('kRiders').textContent=`${d.today_riders||0}`;
+    document.getElementById('kRidersSub').textContent=`hoạt động hôm nay`;
+    document.getElementById('kTO').textContent=Object.keys(d.by_to||{}).length;
+    // Rider bar chart (simple HTML bars)
+    const byR=Object.entries(d.by_rider||{}).sort((a,b)=>b[1]-a[1]);
+    const maxR=byR.length?byR[0][1]:1;
+    document.getElementById('chartRider').innerHTML=byR.length?byR.map(([n,c])=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="min-width:100px;font-size:11px;text-align:right;color:var(--text2)">${n.split(' ').slice(-2).join(' ')}</span><div style="flex:1;background:var(--bg2);border-radius:4px;height:20px;overflow:hidden"><div style="width:${c/maxR*100}%;height:100%;background:var(--spx);border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:10px;color:#fff;font-weight:700">${c}</div></div></div>`).join(''):'<p style="color:var(--text3);text-align:center;padding:24px">Chưa có dữ liệu quét hôm nay</p>';
+    // TO chart
+    const byT=Object.entries(d.by_to||{}).sort((a,b)=>b[1]-a[1]).slice(0,20);
+    const maxT=byT.length?byT[0][1]:1;
+    document.getElementById('chartTO').innerHTML=byT.length?byT.map(([t,c])=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span class="mono" style="min-width:120px;font-size:10px;text-align:right;color:var(--text2)">${t}</span><div style="flex:1;background:var(--bg2);border-radius:4px;height:18px;overflow:hidden"><div style="width:${c/maxT*100}%;height:100%;background:var(--purple);border-radius:4px;display:flex;align-items:center;padding-left:6px;font-size:10px;color:#fff;font-weight:700">${c}</div></div></div>`).join(''):'<p style="color:var(--text3);text-align:center;padding:24px">Chưa có dữ liệu</p>';
+    // Idle riders
+    const rr=await api('/api/riders');
+    const active=Object.keys(d.by_rider||{});
+    if(rr?.success){
+      const idle=rr.data.filter(r=>!active.includes(r.name));
+      const ic=document.getElementById('idleCard');
+      if(idle.length>0){ic.style.display='';document.getElementById('idleTitle').textContent=`⚠️ Rider chưa quét hôm nay (${idle.length})`;
+        document.getElementById('idleList').innerHTML=idle.map(r=>`<span class="chip chip-warn" style="margin:2px">${r.name} (${r.zone})</span>`).join('')
+      }else{ic.style.display='none'}
+    }
+    // Rider-TO info
+    if(d.rider_tos){const info=Object.entries(d.rider_tos);document.getElementById('kRidersSub').textContent=`${d.today_riders} active / ${info.reduce((s,e)=>s+e[1].count,0)} TOs`}
+  }
+  if(sy?.success){
+    const sb=document.getElementById('syncBadge');
+    sb.textContent=sy.data.status==='ok'?'● Synced':sy.data.status==='error'?'● Error':sy.data.status==='syncing'?'● Syncing...':'● Idle';
+    sb.className='badge '+(sy.data.status==='ok'?'badge-ok':sy.data.status==='error'?'badge-err':'badge-warn');
+    document.getElementById('kMaster').textContent=sy.data.master_count||0;
+    document.getElementById('kMasterSub').textContent=`riders: ${sy.data.rider_count||0} | raw_to: ${sy.data.raw_to_count||0} | scans: ${sy.data.scan_count||0}`;
+  }
+  if(cfg?.success){document.getElementById('hubLabel').textContent=`Hub: ${cfg.data.hub_name||HUB}`}
+
+  // ★ AI Alerts + Missing summary
+  const toComp = await api('/api/to-compare');
+  if(toComp?.success&&toComp.data.length){
+    const d=toComp.data;
+    const nonXa=d.filter(t=>!t.isXa);
+    const missing=nonXa.filter(t=>t.status==='missing');
+    const extra=nonXa.filter(t=>t.status==='extra');
+    const totalMissing=missing.reduce((s,t)=>s+Math.abs(t.diff),0);
+    const totalExtra=extra.reduce((s,t)=>s+t.diff,0);
+    const xa=d.filter(t=>t.isXa);
+
+    // AI Alerts
+    let alerts=[];
+    extra.forEach(t=>{if(t.diff>=3)alerts.push({type:'err',msg:`🔴 TO ${t.to}: quet THUA ${t.diff} don — Rider: ${fv((t.riders||[]).join(', '))||'?'}. Co the rider spam bao.`})});
+    missing.filter(t=>Math.abs(t.diff)>=5).forEach(t=>{alerts.push({type:'warn',msg:`⚠️ TO ${t.to}: THIẾU ${Math.abs(t.diff)} đơn chưa quét`})});
+    // Riders scanning wrong — multiple TOs with extra
+    const riderExtraMap={};extra.forEach(t=>{(t.riders||[]).forEach(r=>{if(!riderExtraMap[r])riderExtraMap[r]=0;riderExtraMap[r]+=t.diff})});
+    Object.entries(riderExtraMap).filter(([r,c])=>c>=3).forEach(([r,c])=>{alerts.push({type:'err',msg:`🤖 AI: Rider <b>${r}</b> quét thừa tổng ${c} đơn trên nhiều TO — cần kiểm tra`})});
+    if(!alerts.length)alerts.push({type:'ok',msg:'✅ Không có cảnh báo bất thường'});
+    document.getElementById('aiAlerts').innerHTML=alerts.map(a=>`<div class="alert alert-${a.type==='err'?'warn':a.type==='warn'?'warn':'ok'}" style="margin-bottom:6px;padding:8px 12px;font-size:11px">${a.msg}</div>`).join('');
+
+    // Missing summary
+    document.getElementById('missingBody').innerHTML=`
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin-bottom:12px">
+        <div style="background:var(--err-bg);padding:10px;border-radius:8px"><div style="font-size:22px;font-weight:900;color:var(--err)">${totalMissing}</div><div style="font-size:10px;color:var(--text2)">Đơn thiếu</div></div>
+        <div style="background:var(--warn-bg);padding:10px;border-radius:8px"><div style="font-size:22px;font-weight:900;color:var(--warn)">${totalExtra}</div><div style="font-size:10px;color:var(--text2)">Đơn thừa</div></div>
+        <div style="background:var(--ok-bg);padding:10px;border-radius:8px"><div style="font-size:22px;font-weight:900;color:var(--ok)">${xa.length}</div><div style="font-size:10px;color:var(--text2)">TO Xá</div></div>
+      </div>
+      ${missing.length?`<div style="font-size:11px;color:var(--text2)">TO thiếu đơn: ${missing.map(t=>`<span class="chip chip-err" style="margin:2px">${t.to} (-${Math.abs(t.diff)})</span>`).join('')}</div>`:''}`;
+  }
+}
+
+async function loadLogs(){
+  let ep='/api/scans?limit=300';
+  const d=document.getElementById('fDate').value,q=document.getElementById('fSearch').value;
+  if(d)ep+=`&date=${d}`;if(q)ep+=`&search=${encodeURIComponent(q)}`;
+  const r=await api(ep);
+  if(r?.success){
+    document.getElementById('logCount').textContent=r.total+' kết quả';
+    document.getElementById('logBody').innerHTML=r.data.length?`<table><thead><tr><th>#</th><th>Rider</th><th>TO</th><th>Mã đơn</th><th>Zone</th><th>Thời gian</th></tr></thead><tbody>${r.data.slice(0,200).map((s,i)=>`<tr><td>${i+1}</td><td style="font-weight:600">${s.rider_name}</td><td class="mono">${s.to_code}</td><td class="mono">${s.parcel_code||'-'}</td><td>${s.zone?`<span class="chip chip-purple">${s.zone}</span>`:'-'}</td><td style="font-size:10px;color:var(--text3)">${(s.timestamp||'').replace('T',' ').slice(0,19)}</td></tr>`).join('')}</tbody></table>`:'<p style="text-align:center;padding:24px;color:var(--text3)">Chưa có dữ liệu</p>';
+  }
+}
+
+let _toData=[];
+async function loadTOCompare(){
+  const r=await api('/api/to-compare');
+  if(r?.success){_toData=r.data;filterTOComp();
+    const xa=r.data.filter(t=>t.isXa);
+    document.getElementById('xaBody').innerHTML=xa.length?`<table><thead><tr><th>TO Code (Xa)</th><th>Rider</th><th>Da quet</th></tr></thead><tbody>${xa.map(t=>`<tr><td class="mono">${t.to}</td><td style="font-size:10px">${fv((t.riders||[]).join(', '))||'-'}</td><td>${t.scanned}</td></tr>`).join('')}</tbody></table>`:`<p style="text-align:center;padding:12px;color:var(--text3)">Khong co TO xa</p>`;
+  }
+}
+function filterTOComp(){
+  const q=(document.getElementById('toSearch')?.value||'').toUpperCase();
+  const f=document.getElementById('toFilter')?.value||'';
+  let d=_toData.filter(t=>!t.isXa);
+  if(q)d=d.filter(t=>t.to.toUpperCase().includes(q)||(t.riders||[]).some(r=>r.toUpperCase().includes(q)));
+  if(f)d=d.filter(t=>t.status===f);
+  document.getElementById('toCompBody').innerHTML=d.length?`<table><thead><tr><th>TO Code</th><th>He thong</th><th>Da quet</th><th>Lech</th><th>Rider quet</th><th>Trang thai</th></tr></thead><tbody>${d.map(t=>`<tr><td class="mono">${t.to}</td><td>${t.system}</td><td>${t.scanned}</td><td style="font-weight:700;color:${t.diff===0?'var(--ok)':t.diff<0?'var(--err)':'var(--warn)'}">${t.diff>0?'+':''}${t.diff}</td><td style="font-size:10px">${fv((t.riders||[]).join(', '))||'-'}</td><td><span class="chip chip-${t.status==='match'?'ok':t.status==='missing'?'err':'warn'}">${t.status==='match'?'OK':t.status==='missing'?'Thieu '+Math.abs(t.diff):'Thua '+t.diff}</span></td></tr>`).join('')}</tbody></table>`:'<p style="text-align:center;padding:24px;color:var(--text3)">Khong co du lieu</p>';
+}
+
+let _riderData=[],_riderByR={},_riderTOs={};
+async function loadRiders(){
+  const[r,s]=await Promise.all([api('/api/riders'),api('/api/stats')]);
+  if(r?.success){
+    _riderByR=s?.data?.by_rider||{};_riderTOs=s?.data?.rider_tos||{};
+    _riderData=r.data;
+    filterRiders();
+  }
+}
+function filterRiders(){
+  const q=(document.getElementById('riderSearch')?.value||'').toUpperCase();
+  const f=document.getElementById('riderFilter')?.value||'';
+  let d=[..._riderData];
+  if(q)d=d.filter(r=>r.name.toUpperCase().includes(q)||r.zone.toUpperCase().includes(q)||String(r.id).includes(q));
+  if(f==='active')d=d.filter(r=>_riderByR[r.name]);
+  if(f==='idle')d=d.filter(r=>!_riderByR[r.name]);
+  document.getElementById('riderCountLabel').textContent=d.length+'/'+_riderData.length+' riders';
+  document.getElementById('riderBody').innerHTML=`<table><thead><tr><th>ID</th><th>Ho va ten</th><th>Zone</th><th>Don</th><th>TOs</th><th>TT</th></tr></thead><tbody>${d.map(r=>{const c=_riderByR[r.name]||0;const rt=_riderTOs[r.name];return`<tr><td class="mono">${r.id}</td><td style="font-weight:600">${fv(r.name)}</td><td><span class="chip chip-purple">${r.zone}</span></td><td style="font-weight:700">${c}</td><td class="mono" style="font-size:10px">${rt?rt.tos.join(', '):'-'}</td><td><span class="chip chip-${c?'ok':'warn'}">${c?'Active':'Idle'}</span></td></tr>`}).join('')}</tbody></table>`;
+}
+
+async function loadUsers(){
+  const r=await api('/api/users');
+  if(r?.success){
+    document.getElementById('userBody').innerHTML=`<table><thead><tr><th>Email</th><th>Status</th><th>Role</th><th>Hub</th><th>Scope</th><th>Created</th><th>Action</th></tr></thead><tbody>${r.data.map(u=>`<tr><td style="font-weight:500">${u.email}</td><td><span class="chip chip-${u.status==='Approved'?'ok':'warn'}">${u.status}</span></td><td><span class="chip chip-${u.role==='Admin'?'purple':u.role==='Leader'?'blue':'warn'}">${u.role||'Staff'}</span></td><td class="mono">${u.hub||'-'}</td><td style="font-size:10px">${u.scope||'-'}</td><td style="font-size:10px;color:var(--text3)">${(u.created||'').slice(0,10)}</td><td>${u.status!=='Approved'?`<button class="btn btn-sm btn-ok" onclick="approveUser('${u.email}')">✓</button> <button class="btn btn-sm btn-err" onclick="rejectUser('${u.email}')">✗</button>`:''}</td></tr>`).join('')}</tbody></table>`;
+  }
+}
+
+async function addUser(){
+  const email=document.getElementById('nuEmail').value.trim();if(!email)return;
+  await api('/api/users','POST',{email,password:document.getElementById('nuPass').value||'1234',role:document.getElementById('nuRole').value,hub:document.getElementById('nuHub').value,scope:document.getElementById('nuScope').value,status:'Approved'});
+  document.getElementById('nuEmail').value='';loadUsers();
+}
+async function approveUser(email){await api('/api/users/approve','POST',{email});loadUsers()}
+async function rejectUser(email){if(!confirm('Xóa '+email+'?'))return;await api('/api/users/reject','POST',{email});loadUsers()}
+
+async function loadHubs(){
+  const r=await api('/api/hubs');
+  if(r?.success){
+    document.getElementById('hubBody').innerHTML=`<table><thead><tr><th>Hub ID</th><th>Tên</th><th>GAS</th><th>Riders</th><th>Scans</th><th>Master</th><th>Raw TO</th><th>Sync</th><th>Action</th></tr></thead><tbody>${r.data.map(h=>`<tr><td class="mono" style="font-weight:700">${h.id}</td><td>${h.name}</td><td>${h.gas_url}</td><td>${h.riders}</td><td>${h.scans}</td><td>${h.master}</td><td>${h.raw_to}</td><td><span class="chip chip-${h.sync?.status==='ok'?'ok':'warn'}">${h.sync?.status||'idle'}</span></td><td><button class="btn btn-sm btn-ok" onclick="syncHub('${h.id}')">🔄</button>${h.id!=='63BDG03'?` <button class="btn btn-sm btn-err" onclick="delHub('${h.id}')">✗</button>`:''}</td></tr>`).join('')}</tbody></table>`;
+  }
+}
+async function addHub(){
+  const id=document.getElementById('nhId').value.trim(),name=document.getElementById('nhName').value.trim();if(!id||!name)return;
+  await api('/api/hubs','POST',{id,name,gas_url:document.getElementById('nhGas').value.trim(),gas_key:document.getElementById('nhKey').value.trim()});
+  document.getElementById('nhId').value='';document.getElementById('nhName').value='';document.getElementById('nhGas').value='';
+  loadHubs();
+}
+async function syncHub(id){await fetch(API+'/api/sync?hub='+id,{method:'POST'});setTimeout(loadHubs,3000)}
+async function delHub(id){if(!confirm('Xóa hub '+id+'?'))return;await api('/api/hubs/delete','POST',{id});loadHubs()}
+
+async function loadCfg(){
+  const r=await api('/api/config');
+  if(r?.success){
+    document.getElementById('cfgGas').value=r.data.gas_url||'';
+    document.getElementById('cfgKey').value=r.data.gas_key||'';
+    document.getElementById('sysInfo').innerHTML=`<p>Hub: <strong>${r.data.hub_id}</strong> — ${r.data.hub_name}</p><p>Users: ${r.data.user_count} | Riders: ${r.data.rider_count} | Scans: ${r.data.scan_count}</p><p>Master: ${r.data.master_count} | Raw_TO: ${r.data.raw_to_count||0}</p><p>Last sync: ${(r.data.sync?.last||'--').slice(0,19)}</p><p>Last backup: ${(r.data.backup_last||'--').slice(0,19)}</p><hr style="border:none;border-top:1px solid var(--bdr);margin:8px 0"><p style="font-size:10px;color:var(--text3)">SPX Scanner AI v8.1 — Multi-Hub Platform</p>`;
+  }
+}
+async function saveCfg(){await api('/api/config','POST',{gas_url:document.getElementById('cfgGas').value,gas_key:document.getElementById('cfgKey').value});document.getElementById('cfgSt').innerHTML='<span style="color:var(--ok)">✅ Đã lưu</span>';loadAll()}
+async function doSync(){document.getElementById('cfgSt').innerHTML='⏳ Syncing...';await api('/api/sync','POST');setTimeout(()=>{loadAll();loadCfg();document.getElementById('cfgSt').innerHTML='<span style="color:var(--ok)">✅ Sync done</span>'},5000)}
+async function doBackup(){await api('/api/backup','POST');document.getElementById('cfgSt').innerHTML='<span style="color:var(--ok)">✅ Backup sent</span>'}
+async function testTG(){await api('/api/telegram/test','POST');document.getElementById('cfgSt').innerHTML='<span style="color:var(--ok)">✅ Telegram sent</span>'}
+
+// ★ AI Chat
+function togAI(){const p=document.getElementById('aiPanel');p.style.display=p.style.display==='none'?'':'none';if(p.style.display!=='none'&&!document.getElementById('aiMsgs').innerHTML){addAIMsg('bot','Xin chào! Tôi là AI Assistant của SPX Scanner. Hỏi tôi về rider, TO, đơn thiếu, hoặc bất kỳ thông tin nào về hub.')}}
+function addAIMsg(role,text){const el=document.getElementById('aiMsgs');const isBot=role==='bot';el.innerHTML+=`<div style="display:flex;justify-content:${isBot?'flex-start':'flex-end'};margin-bottom:8px"><div style="max-width:85%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.5;${isBot?'background:var(--bg2);color:var(--text)':'background:var(--spx);color:#fff'}">${isBot?'🤖 ':''}<span>${text}</span></div></div>`;el.scrollTop=el.scrollHeight}
+async function sendAI(){const inp=document.getElementById('aiInput');const msg=inp.value.trim();if(!msg)return;addAIMsg('user',msg);inp.value='';addAIMsg('bot','<span style="opacity:.5">Đang suy nghĩ...</span>');const r=await api('/api/ai/chat','POST',{message:msg});const msgs=document.getElementById('aiMsgs');msgs.lastChild.remove();if(r?.reply)addAIMsg('bot',r.reply+(r.source==='local'?' <span style="font-size:9px;opacity:.5">(local)</span>':' <span style="font-size:9px;opacity:.5">(Groq AI)</span>'));else addAIMsg('bot','Không nhận được phản hồi từ AI.')}
+
+// ★ Language EN/VI
+let LANG=localStorage.getItem('lang')||'vi';
+const L={
+  vi:{login:'Đăng nhập',register:'Đăng ký tài khoản mới',email:'Email',pass:'Mật khẩu',logout:'Đăng xuất',overview:'Tổng quan',riders:'Tài xế',logs:'Nhật ký',users:'Người dùng',hubs:'Hub',config:'Cấu hình',tocompare:'So sánh TO',scansToday:'Đơn hôm nay',riderActive:'Rider hoạt động',toToday:'TO hôm nay',masterData:'Master Data',search:'Tìm kiếm thông minh...'},
+  en:{login:'Sign in',register:'Create new account',email:'Email',pass:'Password',logout:'Logout',overview:'Overview',riders:'Riders',logs:'Logs',users:'Users',hubs:'Hubs',config:'Config',tocompare:'TO Compare',scansToday:'Scans today',riderActive:'Riders active',toToday:'TOs today',masterData:'Master Data',search:'Smart search...'}
+};
+function t(k){return L[LANG]?.[k]||L.vi[k]||k}
+function togLang(){LANG=LANG==='vi'?'en':'vi';localStorage.setItem('lang',LANG);applyLang()}
+function applyLang(){
+  document.querySelectorAll('#loLang,#dashLang').forEach(b=>{if(b)b.textContent=LANG==='vi'?'EN':'VI'});
+  const ls=document.getElementById('loSub');if(ls)ls.textContent=LANG==='vi'?'Đăng nhập Admin Dashboard':'Sign in to Admin Dashboard';
+}
+applyLang();
+
+// Init
+if(localStorage.getItem('se')){enterDash(localStorage.getItem('se'),localStorage.getItem('sr'),localStorage.getItem('sh'))}
+</script>
+</body>
+</html>
