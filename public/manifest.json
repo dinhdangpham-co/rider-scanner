@@ -1,0 +1,10 @@
+{
+  "name": "SPX Scanner AI",
+  "short_name": "SPX Scan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F5F5",
+  "theme_color": "#EE4D2D",
+  "orientation": "portrait",
+  "icons": [{"src":"/favicon.png","sizes":"128x128","type":"image/png"}]
+}

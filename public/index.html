@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FC6B03">
+<title>SPX Scanner</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="manifest" href="/manifest.json">
+<style>
+:root{--spx:#FC6B03;--spx-d:#D45A00;--spx-l:#FFF3E8;--ok:#10B981;--err:#EF4444;--warn:#F59E0B;--purple:#8B5CF6;
+--bg:#F5F5F5;--card:#FFF;--text:#1A1A1A;--text2:#888;--bdr:#E5E5E5;--sh:0 1px 4px rgba(0,0,0,.06);--r:14px;--rs:10px}
+@media(prefers-color-scheme:dark){:root{--bg:#111;--card:#1C1C1E;--text:#F5F5F5;--text2:#8E8E93;--bdr:#333;--spx-l:#2C1800}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* Header compact */
+.hdr{background:var(--spx);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hdr h1{font-size:15px;font-weight:800;color:#fff}
+.hdr .st{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:700;color:#fff}
+.hdr .st.on{background:var(--ok)}.hdr .st.off{background:rgba(255,255,255,.25)}
+
+.scr{display:none;padding:10px 10px 80px;max-width:500px;margin:0 auto}.scr.on{display:block}
+.cd{background:var(--card);border-radius:var(--r);padding:12px;margin-bottom:8px;box-shadow:var(--sh);border:1px solid var(--bdr)}
+.ct{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.btn{display:flex;align-items:center;justify-content:center;padding:12px 16px;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;width:100%;gap:6px;transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-spx{background:var(--spx);color:#fff}.btn-ok{background:var(--ok);color:#fff}
+.btn-err{background:var(--err);color:#fff}.btn-out{background:var(--spx-l);color:var(--spx);border:2px solid var(--spx)}
+.btn-gh{background:transparent;color:var(--text2);border:1px solid var(--bdr)}
+.btn:disabled{opacity:.4}.btn-s{padding:8px 12px;font-size:12px;border-radius:8px}
+.sel select{width:100%;padding:12px 36px 12px 12px;font-size:14px;background:var(--bg);color:var(--text);border:2px solid var(--bdr);border-radius:var(--rs);appearance:none;font-weight:500}
+.sel select:focus{outline:none;border-color:var(--spx)}.sel{position:relative}.sel::after{content:'▼';position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--text2);font-size:10px;pointer-events:none}
+.irow{display:flex;gap:6px}.irow input{flex:1;padding:10px;background:var(--bg);border:2px solid var(--bdr);border-radius:var(--rs);color:var(--text);font-size:14px;font-family:'SF Mono',Consolas,monospace}
+.irow input:focus{outline:none;border-color:var(--spx)}
+
+/* ★ SCANNER — camera fills available space */
+#scan-box{width:100%;border-radius:var(--r);overflow:hidden;position:relative;background:#000;min-height:200px}
+#reader{width:100%}
+#reader video{border-radius:var(--r)!important}
+#reader img[alt="Info"]{display:none!important}
+#reader div[style*="border"]{border:none!important}
+.s-ov{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:10}
+.s-fr{width:92%;height:70%;min-height:100px;border:3px solid var(--spx);border-radius:12px;position:relative;box-shadow:0 0 0 9999px rgba(0,0,0,.4)}
+.s-fr::before,.s-fr::after{content:'';position:absolute;width:24px;height:24px;border-color:var(--ok);border-style:solid}
+.s-fr::before{top:-2px;left:-2px;border-width:4px 0 0 4px;border-radius:6px 0 0 0}
+.s-fr::after{bottom:-2px;right:-2px;border-width:0 4px 4px 0;border-radius:0 0 6px 0}
+.s-line{position:absolute;top:50%;left:3%;right:3%;height:2px;background:var(--err);box-shadow:0 0 6px var(--err);animation:sL 1.8s ease-in-out infinite}
+@keyframes sL{0%,100%{transform:translateY(-25px)}50%{transform:translateY(25px)}}
+
+/* ★ MODE BAR compact with counter */
+.mbar{padding:8px 12px;border-radius:var(--rs);font-weight:800;font-size:13px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.mbar.m-to{background:linear-gradient(135deg,#7C3AED,#6D28D9);color:#fff}
+.mbar.m-p{background:linear-gradient(135deg,var(--ok),#059669);color:#fff}
+.mbar .cnt{font-size:12px;font-weight:600;opacity:.9}
+
+/* ★ RIDER INFO PANEL — replaces stats grid, shows right below camera */
+.rider-panel{background:var(--card);border:2px solid var(--spx);border-radius:var(--r);padding:10px 12px;margin-top:6px;display:none}
+.rider-panel.show{display:block}
+.rider-panel .rp-name{font-size:16px;font-weight:900;color:var(--spx);line-height:1.2}
+.rider-panel .rp-zone{font-size:13px;font-weight:700;color:var(--purple);margin-top:2px;font-family:monospace}
+.rider-panel .rp-row{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;color:var(--text2)}
+.rider-panel .rp-row .v{font-weight:700;color:var(--text);font-family:monospace}
+.rider-panel .rp-warn{margin-top:4px;padding:4px 8px;background:var(--err);color:#fff;border-radius:6px;font-weight:700;font-size:11px;text-align:center;display:none}
+.rider-panel .rp-unknown{margin-top:4px;padding:4px 8px;background:var(--warn);color:#000;border-radius:6px;font-weight:700;font-size:11px;text-align:center;display:none}
+
+/* Scan log compact */
+.ll{max-height:180px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.li{display:flex;align-items:center;padding:5px 0;border-bottom:1px solid var(--bdr);gap:6px;font-size:11px}
+.li:last-child{border-bottom:none}
+.li .ix{width:20px;height:20px;background:var(--spx);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0}
+.li .co{font-family:'SF Mono',monospace;font-size:10px;word-break:break-all;flex:1;font-weight:500}
+.li .zt{padding:1px 5px;border-radius:4px;font-size:8px;font-weight:700;background:var(--purple);color:#fff;flex-shrink:0}
+.li .tm{font-size:8px;color:var(--text2);flex-shrink:0}
+
+/* Session card */
+.ses{background:var(--spx-l);border:2px solid var(--spx);border-radius:var(--r);padding:10px 12px;margin-bottom:8px;display:none}
+.ses.show{display:block}.ses .rw{display:flex;justify-content:space-between;margin-bottom:6px}
+.ses .lb{font-size:10px;color:var(--text2);font-weight:600}.ses .vl{font-size:14px;font-weight:800}
+
+/* Stats compact row */
+.sts-row{display:flex;gap:4px;margin-bottom:6px;font-size:10px;font-weight:600;color:var(--text2)}
+.sts-row span{background:var(--spx-l);padding:4px 8px;border-radius:6px;flex:1;text-align:center}
+.sts-row .n{color:var(--spx);font-weight:900;font-size:14px;display:block}
+
+.toast{position:fixed;top:46px;left:8px;right:8px;padding:10px;border-radius:var(--rs);font-weight:700;font-size:12px;z-index:200;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.15);animation:tin .2s ease-out}
+.toast-ok{background:var(--ok);color:#fff}.toast-err{background:var(--err);color:#fff}.toast-warn{background:var(--warn);color:#000}
+@keyframes tin{from{transform:translateY(-14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.flash{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(16,185,129,.12);pointer-events:none;z-index:300;animation:fl .15s forwards}
+@keyframes fl{from{opacity:1}to{opacity:0}}
+
+.bn{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--bdr);display:flex;padding:4px 0 max(4px,env(safe-area-inset-bottom));z-index:100;box-shadow:0 -1px 4px rgba(0,0,0,.04)}
+.bn-i{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px;cursor:pointer;color:var(--text2);font-size:9px;font-weight:600;border:none;background:none}
+.bn-i.on{color:var(--spx)}.bn-i svg{width:20px;height:20px}
+
+.dv{text-align:center;color:var(--text2);font-size:11px;padding:4px 0}
+</style>
+</head>
+<body>
+<div class="hdr"><h1>📦 SPX Scanner</h1><span style="font-size:9px;color:rgba(255,255,255,.7);margin-left:4px" id="hubLabel"></span><span id="badge" class="st off">...</span></div>
+
+<!-- HOME -->
+<div class="scr on" id="s-home">
+  <div class="cd"><div class="ct">👤 Chọn tài xế</div><div class="sel"><select id="selR"><option value="">-- Chọn tài xế --</option></select></div></div>
+  <div class="cd">
+    <div class="ct">📋 Nhập mã TO</div>
+    <div class="irow"><input type="text" id="inTO" placeholder="VD: TO20260912BQMYU" autocomplete="off" autocapitalize="characters"><button class="btn btn-spx btn-s" onclick="setTO()" style="width:auto;min-width:44px">OK</button></div>
+    <div class="dv">hoặc</div>
+    <button class="btn btn-out" onclick="scanTO()">📷 Quét mã TO</button>
+  </div>
+  <div class="ses" id="sesCard"><div class="rw"><div><div class="lb">Tài xế</div><div class="vl" id="sesR">-</div></div><div style="text-align:right"><div class="lb">Mã TO</div><div class="vl" id="sesT" style="font-family:monospace;font-size:12px">-</div></div></div><button class="btn btn-ok" onclick="startScan()">🚀 BẮT ĐẦU QUÉT ĐƠN</button></div>
+  <div class="cd"><div class="ct">📊 Hôm nay</div><div class="sts-row"><span><span class="n" id="hT">0</span>Tổng</span><span><span class="n" id="hS">0</span>Phiên</span><span><span class="n" id="hD">0</span>Trùng</span></div></div>
+</div>
+
+<!-- SCAN -->
+<div class="scr" id="s-scan">
+  <div class="mbar" id="mBar"><span>🟢 QUÉT ĐƠN</span><span class="cnt" id="mCnt">0 đơn</span></div>
+  <div id="scan-box">
+    <div id="reader"></div>
+    <div class="s-ov"><div class="s-fr"><div class="s-line"></div></div></div>
+  </div>
+
+  <!-- ★ RIDER INFO — shows Name + Zone right below camera -->
+  <div class="rider-panel" id="rPanel">
+    <div class="rp-name" id="rpName">-</div>
+    <div class="rp-zone" id="rpZone">-</div>
+    <div class="rp-row"><span>Sort Code:</span><span class="v" id="rpSort">-</span></div>
+    <div class="rp-row"><span>Phường:</span><span class="v" id="rpWard">-</span></div>
+    <div class="rp-warn" id="rpWarn"></div>
+    <div class="rp-unknown" id="rpUnknown">⚠️ Mã không có trong hệ thống</div>
+  </div>
+
+  <!-- Compact stats row -->
+  <div class="sts-row" style="margin-top:6px"><span><span class="n" id="sC">0</span>Quét</span><span><span class="n" id="sD">0</span>Trùng</span><span><span class="n" id="sR">0</span>Đ/phút</span></div>
+
+  <!-- Manual input -->
+  <div class="cd"><div class="ct">⌨️ Nhập thủ công / Bluetooth</div><div class="irow"><input type="text" id="inM" placeholder="Nhập hoặc quét bằng súng BT..." autocomplete="off" autocapitalize="characters"><button class="btn btn-spx btn-s" onclick="doManual()" style="width:auto;min-width:44px">OK</button></div></div>
+
+  <!-- Scan log -->
+  <div class="cd"><div style="display:flex;align-items:center;justify-content:space-between"><div class="ct" style="margin:0">📝 Log</div><span style="font-size:9px;color:var(--text2)" id="lastT">--</span></div><div class="ll" id="logEl"></div></div>
+  <button class="btn btn-err" style="margin-top:6px" onclick="stopAll()">⏹ DỪNG</button>
+</div>
+
+<!-- HISTORY -->
+<div class="scr" id="s-hist">
+  <div class="cd"><div class="ct">📜 Lịch sử quét</div><div style="display:flex;gap:6px;margin-bottom:8px"><button class="btn btn-gh btn-s" onclick="loadHist()">🔄 Tải lại</button><button class="btn btn-spx btn-s" onclick="dlCSV()">📥 CSV</button></div><div id="histEl" class="ll" style="max-height:500px"></div></div>
+</div>
+
+<!-- NAV -->
+<div class="bn">
+  <button class="bn-i on" onclick="go('home')" data-s="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>Trang chủ</button>
+  <button class="bn-i" onclick="go('scan')" data-s="scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Quét</button>
+  <button class="bn-i" onclick="go('hist')" data-s="hist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>Lịch sử</button>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+// ★ Multi-hub: read ?hub= from URL, pass to all API calls
+const urlParams=new URLSearchParams(window.location.search);
+const HUB=urlParams.get('hub')||'63BDG03';
+const API=location.origin;
+function hubQ(ep){return ep+(ep.includes('?')?'&':'?')+'hub='+encodeURIComponent(HUB)}
+let SRV=true,rider=null,toCode='',mode='',qr=null,scanning=false;
+let sess=[],dups=0,t0=null,lastCode='',lastCodeT=0;const CD=1000;
+let actx;
+// ★ 3 distinct audio tones
+function bip(f=1200,d=80){try{if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.frequency.value=f;g.gain.value=.3;o.start();o.stop(actx.currentTime+d/1000)}catch(e){}}
+function bipOK(){bip(1200,50);setTimeout(()=>bip(1600,50),70)} // ✅ short high chirp
+function bipDup(){bip(800,80);setTimeout(()=>bip(800,80),120);setTimeout(()=>bip(800,80),240)} // ⚠️ triple beep
+function bipBad(){bip(300,300)} // ❌ long low buzz (unknown)
+function bipInvalid(){bip(200,100);setTimeout(()=>bip(150,200),120)} // 🚫 very low descending = wrong format
+function fl(){const d=document.createElement('div');d.className='flash';document.body.appendChild(d);setTimeout(()=>d.remove(),200)}
+
+function go(s){document.querySelectorAll('.scr').forEach(e=>e.classList.remove('on'));document.getElementById('s-'+s).classList.add('on');document.querySelectorAll('.bn-i').forEach(b=>b.classList.toggle('on',b.dataset.s===s));if(s==='hist')loadHist()}
+async function api(ep,m='GET',b=null){try{const o={method:m,headers:{'Content-Type':'application/json'}};if(b)o.body=JSON.stringify(b);const r=await fetch(API+hubQ(ep),o);const d=await r.json();conn(true);return d}catch(e){conn(false);return null}}
+function conn(on){const b=document.getElementById('badge');b.textContent=on?'Online':'Offline';b.className='st '+(on?'on':'off');SRV=on}
+
+async function loadRiders(){const s=document.getElementById('selR');if(SRV){const r=await api('/api/riders');if(r&&r.success){s.innerHTML='<option value="">-- Chọn tài xế --</option>';r.data.forEach(d=>{s.innerHTML+=`<option value="${d.id}" data-n="${d.name}" data-z="${d.zone||''}">${d.name}${d.zone?' ('+d.zone+')':''}</option>`});localStorage.setItem('riders',JSON.stringify(r.data));return}}const l=JSON.parse(localStorage.getItem('riders')||'[]');s.innerHTML='<option value="">-- Chọn tài xế --</option>';l.forEach(d=>{s.innerHTML+=`<option value="${d.id}" data-n="${d.name}">${d.name}</option>`})}
+document.getElementById('selR').addEventListener('change',function(){const o=this.options[this.selectedIndex];if(this.value){rider={id:+this.value,name:o.dataset.n,zone:o.dataset.z||''};localStorage.setItem('lr',JSON.stringify(rider));ckReady()}else rider=null})
+function setTO(){const v=document.getElementById('inTO').value.trim().toUpperCase();if(!v)return;toCode=v;ckReady();toast('✅ TO: '+v,'ok')}
+function scanTO(){mode='TO';go('scan');camStart()}
+document.getElementById('inTO').addEventListener('keydown',e=>{if(e.key==='Enter')setTO()})
+function ckReady(){const c=document.getElementById('sesCard');if(rider&&toCode){c.classList.add('show');document.getElementById('sesR').textContent=rider.name;document.getElementById('sesT').textContent=toCode}else c.classList.remove('show')}
+function startScan(){if(!rider||!toCode){toast('⚠️ Chọn tài xế và TO trước!','err');return}mode='PARCEL';sess=[];dups=0;t0=Date.now();go('scan');camStart();updSt()}
+
+async function camStart(){
+  const mb=document.getElementById('mBar');
+  if(mode==='TO'){mb.innerHTML='<span>🟣 QUÉT MÃ TO</span><span class="cnt"></span>';mb.className='mbar m-to'}
+  else{mb.innerHTML='<span>🟢 QUÉT ĐƠN LIÊN TỤC</span><span class="cnt" id="mCnt">0 đơn</span>';mb.className='mbar m-p'}
+  if(qr&&scanning){try{await qr.stop()}catch(e){}}
+  document.getElementById('reader').innerHTML='';
+  qr=new Html5Qrcode("reader");scanning=true;
+
+  const cfg={
+    fps:12,
+    qrbox:function(vw,vh){return{width:Math.floor(vw*0.90),height:Math.max(Math.floor(vh*0.65),80)}},
+    formatsToSupport:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+    experimentalFeatures:{useBarCodeDetectorIfSupported:true},
+    rememberLastUsedCamera:true,
+    disableFlip:false,
+  };
+
+  try{await qr.start({facingMode:"environment"},cfg,onScan,()=>{})}
+  catch(e1){
+    try{
+      const devs=await Html5Qrcode.getCameras();
+      if(devs&&devs.length>0){
+        const back=devs.find(d=>(d.label||'').toLowerCase().match(/back|rear|env/));
+        await qr.start(back?back.id:devs[devs.length-1].id,cfg,onScan,()=>{});
+      }else toast('❌ Không tìm thấy camera!','err');
+    }catch(e2){toast('❌ Cho phép camera trong cài đặt trình duyệt','err')}
+  }
+  // ★ Focus manual input for Bluetooth scanner
+  setTimeout(()=>{const m=document.getElementById('inM');if(m)m.focus()},500);
+}
+
+// ★ Code format validation
+function isValidParcel(c){return /^(SPXVN|VN)\d{5,}/.test(c)||/^\d{12,}$/.test(c)}
+function isValidTO(c){return /^TO\d{6,}/.test(c)}
+
+async function onScan(text){
+  const now=Date.now();const code=text.trim().toUpperCase();if(!code)return;
+  if(code===lastCode&&now-lastCodeT<CD)return;lastCode=code;lastCodeT=now;
+  if(mode==='TO'){
+    if(!isValidTO(code)){bipInvalid();toast('🚫 Sai ma TO. Yeu cau kiem tra lai!','err');return}
+    toCode=code;ckReady();toast('✅ TO: '+code,'ok');bipOK();fl();await camStop();go('home');return
+  }
+  // Validate parcel code format
+  if(!isValidParcel(code)){bipInvalid();toast('🚫 Sai ma don. Yeu cau kiem tra lai!','err');return}
+  await doParcel(code);
+}
+
+// ★ Batch queue for API calls
+let scanQueue=[];let flushTimer=null;
+function queueScan(scanData){
+  scanQueue.push(scanData);
+  if(!flushTimer)flushTimer=setTimeout(flushQueue,2000);
+  if(scanQueue.length>=20)flushQueue(); // flush every 20 or 2s
+}
+async function flushQueue(){
+  clearTimeout(flushTimer);flushTimer=null;
+  if(!scanQueue.length||!SRV)return;
+  const batch=[...scanQueue];scanQueue=[];
+  // Send individually for now (batch endpoint can be added server-side)
+  for(const s of batch){
+    api('/api/scans','POST',s).catch(e=>{});
+  }
+}
+
+async function doParcel(code){
+  const dup=sess.some(s=>s.code===code);
+  if(dup){dups++;bipDup();toast('⚠️ TRÙNG: '+code,'warn');document.getElementById('sD').textContent=dups;updSt();return}
+
+  bipOK();fl();
+  const scan={code,time:new Date().toISOString(),dup:false,zone:'',info:null};
+
+  if(SRV){
+    const r=await api('/api/scans','POST',{rider_id:rider.id,rider_name:rider.name,to_code:toCode,parcel_code:code,scan_type:'PARCEL'});
+    if(r&&r.data){
+      scan.zone=r.data.zone_clean||r.data.zone||r.data.sort_code||'';
+      scan.info={zone:r.data.zone,zone_clean:r.data.zone_clean,sort_code:r.data.sort_code,ward:r.data.ward,driver:r.data.driver,assigned_riders:r.data.assigned_riders};
+      showRiderPanel(scan.info, code);
+    }else{
+      // ★ Unknown — buzz sound
+      bipBad();
+      showUnknown(code);
+    }
+  }else{
+    const ol=JSON.parse(localStorage.getItem('ol')||'[]');
+    ol.push({r:rider.name,to:toCode,code,time:scan.time,dup:false});
+    localStorage.setItem('ol',JSON.stringify(ol));
+    hidePanel();
+  }
+
+  sess.push(scan);
+  toast(`✅ #${sess.length} ${code}${scan.zone?' → '+scan.zone:''}`,'ok');
+  updSt();renderLog();
+}
+
+// ★ Rider panel — shows Name + Zone prominently
+function showRiderPanel(info, code){
+  const p=document.getElementById('rPanel');
+  p.classList.add('show');
+  document.getElementById('rpName').textContent=info.assigned_riders||info.driver||'—';
+  document.getElementById('rpZone').textContent=info.zone_clean||info.zone||'—';
+  document.getElementById('rpSort').textContent=info.sort_code||'-';
+  document.getElementById('rpWard').textContent=info.ward||'-';
+
+  // Zone mismatch warning
+  const warn=document.getElementById('rpWarn');
+  if(rider&&rider.zone&&info.zone_clean&&rider.zone.toUpperCase()!==info.zone_clean.toUpperCase()){
+    warn.textContent='⚠️ KHÔNG THUỘC ZONE CỦA BẠN ('+rider.zone+')';warn.style.display='block';
+  }else warn.style.display='none';
+
+  document.getElementById('rpUnknown').style.display='none';
+}
+function showUnknown(code){
+  const p=document.getElementById('rPanel');
+  p.classList.add('show');
+  document.getElementById('rpName').textContent='—';
+  document.getElementById('rpZone').textContent='—';
+  document.getElementById('rpSort').textContent='-';
+  document.getElementById('rpWard').textContent='-';
+  document.getElementById('rpWarn').style.display='none';
+  document.getElementById('rpUnknown').style.display='block';
+}
+function hidePanel(){document.getElementById('rPanel').classList.remove('show')}
+
+function doManual(){const i=document.getElementById('inM');const c=i.value.trim().toUpperCase();if(!c)return;if(mode==='TO'){toCode=c;ckReady();toast('✅ TO: '+c,'ok');bipOK();camStop();go('home')}else doParcel(c);i.value='';i.focus()}
+document.getElementById('inM').addEventListener('keydown',e=>{if(e.key==='Enter')doManual()});
+
+// ★ Bluetooth HID scanner: rapid keystrokes → auto-submit
+let hidBuf='',hidTimer=null;
+document.addEventListener('keydown',function(e){
+  // Only capture in scan mode, ignore if typing in input
+  if(mode!=='PARCEL')return;
+  if(document.activeElement&&document.activeElement.tagName==='INPUT')return;
+  if(e.key==='Enter'&&hidBuf.length>4){
+    doParcel(hidBuf.toUpperCase());hidBuf='';return;
+  }
+  if(e.key.length===1){hidBuf+=e.key;clearTimeout(hidTimer);hidTimer=setTimeout(()=>{hidBuf=''},300)}
+});
+
+function updSt(){
+  document.getElementById('sC').textContent=sess.length;
+  document.getElementById('sD').textContent=dups;
+  if(t0&&sess.length){const m=(Date.now()-t0)/60000;document.getElementById('sR').textContent=m>0?Math.round(sess.length/m):0}
+  document.getElementById('hS').textContent=sess.length;
+  document.getElementById('hD').textContent=dups;
+  // Update mode bar counter
+  const mc=document.getElementById('mCnt');
+  if(mc)mc.textContent=sess.length+' đơn'+(dups?' ('+dups+' trùng)':'');
+}
+function renderLog(){
+  const el=document.getElementById('logEl');
+  const items=[...sess].reverse().slice(0,40);
+  el.innerHTML=items.map((s,i)=>`<div class="li"${s.dup?' style="opacity:.4"':''}><div class="ix">${sess.length-i}</div><div class="co">${s.code}</div>${s.zone?`<div class="zt">${s.zone}</div>`:''}<div class="tm">${new Date(s.time).toLocaleTimeString('vi-VN')}</div></div>`).join('');
+  document.getElementById('lastT').textContent=items.length?new Date(items[0].time).toLocaleTimeString('vi-VN'):'--';
+}
+async function camStop(){if(qr&&scanning){try{await qr.stop();qr.clear()}catch(e){}}scanning=false}
+async function stopAll(){await camStop();go('home');loadStats()}
+async function loadHist(){const el=document.getElementById('histEl');el.innerHTML='<div class="dv">Đang tải...</div>';if(SRV){const r=await api('/api/scans?limit=200');if(r&&r.success){if(!r.data.length){el.innerHTML='<div class="dv">Chưa có dữ liệu</div>';return}el.innerHTML=r.data.map((s,i)=>`<div class="li"><div class="ix" style="font-size:8px">${i+1}</div><div style="flex:1"><div class="co">${s.parcel_code||s.to_code}</div><div style="font-size:9px;color:var(--text2)">${s.rider_name} | ${s.to_code}${s.zone?' | '+s.zone:''}</div></div><div class="tm">${s.timestamp.replace('T',' ').slice(0,19)}</div></div>`).join('');return}}const ol=JSON.parse(localStorage.getItem('ol')||'[]');if(!ol.length){el.innerHTML='<div class="dv">Chưa có dữ liệu</div>';return}el.innerHTML=[...ol].reverse().slice(0,100).map((s,i)=>`<div class="li"><div class="ix" style="font-size:8px">${i+1}</div><div style="flex:1"><div class="co">${s.code}</div><div style="font-size:9px;color:var(--text2)">${s.r} | ${s.to}</div></div><div class="tm">${new Date(s.time).toLocaleString('vi-VN')}</div></div>`).join('')}
+function dlCSV(){if(SRV){window.open(API+'/api/scans/export','_blank');return}const ol=JSON.parse(localStorage.getItem('ol')||'[]');let c='\uFEFF'+'Tài xế,TO,Mã đơn,Thời gian\n';ol.forEach(s=>{c+=`"${s.r}","${s.to}","${s.code}","${s.time}"\n`});const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/csv'}));a.download='scans.csv';a.click()}
+async function loadStats(){if(SRV){const r=await api('/api/stats');if(r&&r.success)document.getElementById('hT').textContent=r.data.today_total}}
+function toast(msg,type='ok'){document.querySelectorAll('.toast').forEach(e=>e.remove());const el=document.createElement('div');el.className='toast toast-'+type;el.textContent=msg;document.body.appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .2s';setTimeout(()=>el.remove(),250)},1500)}
+
+async function init(){
+  try{const r=await fetch(API+hubQ('/api/riders'),{signal:AbortSignal.timeout(3000)});conn(r.ok)}catch(e){conn(false)}
+  // Show hub name
+  try{const c=await api('/api/config');if(c&&c.data&&c.data.hub_name)document.getElementById('hubLabel').textContent=c.data.hub_name}catch(e){}
+  await loadRiders();await loadStats();
+  const lr=localStorage.getItem('lr');if(lr){try{rider=JSON.parse(lr);document.getElementById('selR').value=rider.id}catch(e){}}
+  // Init audio on first interaction
+  const initAudio=()=>{if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)()};
+  document.addEventListener('touchstart',initAudio,{once:true});
+  document.addEventListener('click',initAudio,{once:true});
+}
+init();
+</script>
+</body>
+</html>
